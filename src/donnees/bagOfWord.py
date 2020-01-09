@@ -1,6 +1,7 @@
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import csv
+from sklearn.feature_extraction.text import CountVectorizer
 
 
 
@@ -24,6 +25,5 @@ def filtreMotsClefs(sent):
 def testBOW():
     ch = "Have you implemented a policy to ensure you offer the funds within your defined Target Market?"
     print(filtreMotsClefs(ch))
-
 
 testBOW()

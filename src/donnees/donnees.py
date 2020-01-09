@@ -27,17 +27,6 @@ def importData(emplacement):
     return tree.getroot()
 
 def printdata(donnee):
-    """
-    for child in donnee: #Pour toute les feuilles de calcules
-        for t in child: #pour toute les lignes de la feuille de calcul
-            print(get_id(t))
-            print(type(t))
-            for j in t: #pour toute les collones
-                print(j.tag , " : " , j.text)
-            print()
-            print()
-    """
-
     for t in donnee:
         for child in t:
             data = question(child)
