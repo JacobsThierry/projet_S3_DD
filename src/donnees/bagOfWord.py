@@ -26,3 +26,4 @@ def testBOW():
     print(filtreMotsClefs(ch))
 
 
+testBOW()
