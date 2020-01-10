@@ -21,10 +21,28 @@ class question:
         print("\t", self.typeOfAnswer)
         print("\t", self.keyWords)
 
+    def printType(self):
+        print(self.id)
+        print("\t", type(self.typeOfDD))
+        print("\t", type(self.categorie))
+        print("\t", type(self.shortName))
+        print("\t", type(self.text))
+        print("\t", type(self.typeOfAnswer))
+        print("\t", type(self.keyWords))
+
 def importData(emplacement):
     tree = ET.parse(emplacement)
     
     return tree.getroot()
+
+def getData():
+    donnee = importData("../../datas/Questions_IUT_121219.xml")
+    dt = []
+    for t in donnee:
+        for q in t:
+            laq = question(q)
+            dt.append(laq)
+    return dt
 
 def printdata(donnee):
     for t in donnee:
@@ -62,10 +80,8 @@ def getligne(donnee, string):
 
 
 
-
 def testData():
     donnee = importData("../../datas/Questions_IUT_121219.xml")
     #print(question_plus_proche(donnee, donnee[0][0]).tag)
     printdata(donnee)
 
-testData()
