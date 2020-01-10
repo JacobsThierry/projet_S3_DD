@@ -3,7 +3,7 @@ import sqlite3
 
 
 def getConnection():
-    conn = sqlite3.connect('../../datas/bdd.sql')
+    conn = sqlite3.connect('../../datas/bdd.db')
     return conn
 
 
@@ -19,14 +19,19 @@ def creeBDD():
 
     with open('../../datas/BOW.csv') as fp:
         line = fp.readline()
-        keyw.append(line.strip())
+
+        while line:
+            keyw.append(line.strip())
+            line = fp.readline()
+        
 
     
     c.execute(''' CREATE TABLE POSSEDE
                     (id_q text, id_kw integer)''')
     for w in keyw:
-        
-        c.execute(''' INSERT INTO KEYWORD(word) VALUEs (?) ''', (w,))
+    
+        c.execute(''' INSERT INTO KEYWORD (word) VALUEs (?) ''', (w,))
+    conn.commit()
 
 def ajouterDonneeDansBDD(donnee, c):
     data = [donnee.id, donnee.typeOfDD, donnee.categorie, donnee.shortName,
@@ -56,4 +61,5 @@ def creeAjouter():
     creeBDD()
     ajouterDonneesDansBDD()
 
-creeBDD()
+creeAjouter()
+recupererQuestion()
