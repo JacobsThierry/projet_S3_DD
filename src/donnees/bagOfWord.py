@@ -4,10 +4,6 @@ import csv
 from sklearn.feature_extraction.text import CountVectorizer
 
 
-
-
-
-
 def filtreMotsClefs(sent):
     lemmatizer = WordNetLemmatizer()
     words = word_tokenize(sent)
@@ -25,4 +21,5 @@ def filtreMotsClefs(sent):
 def testBOW():
     ch = "Have you implemented a policy to ensure you offer the funds within your defined Target Market?"
     print(filtreMotsClefs(ch))
+
 

@@ -85,3 +85,5 @@ def testData():
     #print(question_plus_proche(donnee, donnee[0][0]).tag)
     printdata(donnee)
 
+
+
