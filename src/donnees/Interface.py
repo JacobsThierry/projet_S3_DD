@@ -60,7 +60,7 @@ class Toplevel1:
         self.Labelframe1.configure(text='''Questions''')
         self.Labelframe1.configure(background="#d9d9d9")
 
-        self.id_entry = tk.Entry(self.Labelframe1)
+        self.id_entry = tk.Entry(self.Labelframe1,state=tk.DISABLED)
         self.id_entry.place(relx=0.091, rely=0.222, height=20, relwidth=0.153
                 , bordermode='ignore')
         self.id_entry.configure(background="white")
