@@ -96,15 +96,18 @@ class Toplevel1:
         self.sn_entry.configure(foreground="#000000")
         self.sn_entry.configure(insertbackground="black")
 
-        self.question_entry = tk.Entry(self.Labelframe1)
-        self.question_entry.place(relx=0.091, rely=0.593, height=100
-                , relwidth=0.825, bordermode='ignore')
-        self.question_entry.configure(background="white")
-        self.question_entry.configure(disabledforeground="#a3a3a3")
-        self.question_entry.configure(font="TkFixedFont")
-        self.question_entry.configure(foreground="#000000")
-        self.question_entry.configure(insertbackground="black")
-
+        self.question_text = tk.Text(self.Labelframe1)
+        self.question_text.place(relx=0.091, rely=0.593, relheight=0.281
+                   , relwidth=0.825, bordermode='ignore')
+        self.question_text.configure(background="white")
+        self.question_text.configure(font="TkTextFont")
+        self.question_text.configure(foreground="black")
+        self.question_text.configure(highlightbackground="#d9d9d9")
+        self.question_text.configure(highlightcolor="black")
+        self.question_text.configure(insertbackground="black")
+        self.question_text.configure(selectbackground="#c4c4c4")
+        self.question_text.configure(selectforeground="black")
+        self.question_text.configure(wrap="word")
         self.Label1 = tk.Label(self.Labelframe1)
         self.Label1.place(relx=0.091, rely=0.148, height=21, width=58
                 , bordermode='ignore')
