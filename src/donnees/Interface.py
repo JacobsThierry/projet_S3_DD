@@ -11,8 +11,7 @@ from tkinter.constants import DISABLED
 
 
     
-def btn_add(root):
-    root.btn_add['state']=DISABLED    
+
 
 def vp_start_gui():
     global val, w, root
@@ -38,11 +37,24 @@ def destroy_Toplevel1():
     w = None
 
 class Toplevel1:
+    def buttonAdd(self):
+        self.question_list.insert(0,self.question_text.get("1.0",'end-1c'))
+        self.id_entry['state']='normal'
+        self.id_entry.delete(0, 'end')
+        self.id_entry.insert(0,cmp+1)
+        self.id_entry['state']=DISABLED   
+        self.sn_entry.delete(0, 'end')
+        self.question_text.delete("1.0",'end-1c')
+        self.tdd_entry.delete(0, 'end')
+        self.tq_entry.delete(0, 'end')
+                       
     def callback(self,event):
         if (self.sn_entry.get()!='' and self.question_text.get("1.0",'end-1c')!='' and self.tdd_entry.get()!='' and self.tq_entry.get()!=''):
             self.add_btn['state']='active'
         else:
             self.add_btn['state']=DISABLED
+    
+
 
     def __init__(self, top=None):
         _bgcolor = '#d9d9d9'  
@@ -82,7 +94,9 @@ class Toplevel1:
         self.id_entry.configure(font="TkFixedFont")
         self.id_entry.configure(foreground="#000000")
         self.id_entry.configure(insertbackground="black")
-        self.id_entry.insert(0,"Q1");
+        global cmp
+        cmp=1
+        self.id_entry.insert(0,cmp);
         self.id_entry['state']=DISABLED
 
         self.tq_entry = tk.Entry(self.Labelframe1)
@@ -194,7 +208,7 @@ class Toplevel1:
         self.Label6.configure(foreground="#000000")
         self.Label6.configure(text='''Question text''')
 
-        self.add_btn = tk.Button(self.Labelframe1)
+        self.add_btn = tk.Button(self.Labelframe1,command=self.buttonAdd)
         self.add_btn.place(relx=0.436, rely=0.914, height=24, width=82
                 , bordermode='ignore')
         self.add_btn.configure(activebackground="#ececec")
