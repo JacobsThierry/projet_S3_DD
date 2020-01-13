@@ -66,6 +66,15 @@ def printdata(donnee):
 def get_id(donnee):
     return donnee.tag
 
+def findQ(Q):
+    donnee = importData("../../datas/Questions_IUT_121219.xml")
+    for t in donnee:
+        for child in t:
+            if get_text(child)==Q:
+               
+                laq=question(get_id(child), get_type(child), get_categ(child), get_sn(child), get_text(child), get_typpe_of_answ(child))
+                return laq
+
 def get_type(donnee):
     for typee in donnee.findall("Type_of_DD"):
         return (typee.text)
@@ -80,8 +89,8 @@ def get_sn(donnee):
         return sn.text
 
 def get_text(donnee):
-
-        return donnee.text
+  for sn in donnee.findall("Question_Text"):
+        return sn.text
 
 def get_typpe_of_answ(donnee):
     for sn in donnee.findall("Type_Of_Answer"):

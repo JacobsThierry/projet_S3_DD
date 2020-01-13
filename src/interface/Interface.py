@@ -51,6 +51,24 @@ class Toplevel1:
         self.add_btn['state']=DISABLED
         self.find_btn['state']=DISABLED
         self.newquestion_cb.set('')
+        self.anwser_cb.current(0)
+        self.tdd_cb.current(0)
+        self.tq_cb.current(0)
+        
+    def onselect(self,event):
+        print("e")
+        self.use_btn['state']='active'
+        
+    def buttonUse(self):
+        laq=donnees.findQ(self.waiting_list.get(self.waiting_list.curselection()))
+        self.question_text.insert("1.0",laq.text)
+        self.sn_entry.insert(0, laq.shortName)
+        self.tdd_cb.set(laq.typeOfDD)
+        self.tq_cb.set(laq.categorie)
+        self.anwser_cb.set(laq.typeOfAnswer)
+        self.newquestion_cb.set('')
+        self.waiting_list.delete(self.waiting_list.curselection())
+        self.use_btn['state']=DISABLED
 
 
     def buttonFind(self):
@@ -63,8 +81,6 @@ class Toplevel1:
         self.newquestion_cb["values"] = foo
 
     def buttonReplace(self):
-        CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
-        LP=modele.get_liste_pertinance(CQ)
         self.id_entry['state']='normal'
         self.id_entry.delete(0, 'end')
         self.id_entry.insert(0,cmp+1)
@@ -72,12 +88,11 @@ class Toplevel1:
         self.sn_entry.delete(0, 'end')
         self.question_text.delete("1.0",'end-1c')
         self.question_text.insert("1.0",self.newquestion_cb.get())
-        for k in range(4):
-            if LP[k][0].text == self.newquestion_cb.get():
-                self.sn_entry.insert(0, LP[k][0].shortName)
-                self.tdd_cb.set(LP[k][0].typeOfDD)
-                self.tq_cb.set(LP[k][0].categorie)
-                self.anwser_cb.set(LP[k][0].typeOfAnswer)
+        laq=donnees.findQ(self.newquestion_cb.get())
+        self.sn_entry.insert(0, laq.shortName)
+        self.tdd_cb.set(laq.typeOfDD)
+        self.tq_cb.set(laq.categorie)
+        self.anwser_cb.set(laq.typeOfAnswer)
         self.newquestion_cb.set('')
         
 
@@ -89,8 +104,6 @@ class Toplevel1:
         self.id_entry['state']=DISABLED
         self.sn_entry.delete(0, 'end')
         self.question_text.delete("1.0",'end-1c')
-        self.tdd_entry.delete(0, 'end')
-        self.tq_entry.delete(0, 'end')
         self.newquestion_cb.set('')
 
 
@@ -300,6 +313,7 @@ class Toplevel1:
         self.waiting_list.configure(disabledforeground="#a3a3a3")
         self.waiting_list.configure(font="TkFixedFont")
         self.waiting_list.configure(foreground="#000000")
+        self.waiting_list.bind('<<ListboxSelect>>', self.onselect)
 
         self.Label7 = tk.Label(top)
         self.Label7.place(relx=0.110, rely=0.102, height=21, width=108)
@@ -361,6 +375,19 @@ class Toplevel1:
         self.nosuggest_btn.configure(highlightcolor="black")
         self.nosuggest_btn.configure(pady="0")
         self.nosuggest_btn.configure(text='''Do not suggest again''')
+        
+        self.use_btn = tk.Button(top,command=self.buttonUse)
+        self.use_btn.place(relx=0.120, rely=0.700, height=24, width=90)
+        self.use_btn.configure(activebackground="#ececec")
+        self.use_btn.configure(activeforeground="#000000")
+        self.use_btn.configure(background="#d9d9d9")
+        self.use_btn.configure(disabledforeground="#a3a3a3")
+        self.use_btn.configure(foreground="#000000")
+        self.use_btn.configure(highlightbackground="#d9d9d9")
+        self.use_btn.configure(highlightcolor="black")
+        self.use_btn.configure(pady="0")
+        self.use_btn.configure(text='''Add as next''')
+        self.use_btn['state']=DISABLED
 
 
 if __name__ == '__main__':
