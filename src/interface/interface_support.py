@@ -4,9 +4,11 @@ import tkinter as tk
 import tkinter.ttk as ttk
 
 def set_Tk_var():
-    global combobox,combobox2
+    global combobox,combobox2,combobox3,combobox4
     combobox = tk.StringVar()
     combobox2= tk.StringVar()
+    combobox3= tk.StringVar()
+    combobox4= tk.StringVar()
 
 def init(top, gui, *args, **kwargs):
     global w, top_level, root

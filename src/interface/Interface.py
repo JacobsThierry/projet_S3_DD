@@ -46,13 +46,15 @@ class Toplevel1:
         self.id_entry['state']=DISABLED
         self.sn_entry.delete(0, 'end')
         self.question_text.delete("1.0",'end-1c')
-        self.tdd_entry.delete(0, 'end')
-        self.tq_entry.delete(0, 'end')
+        self.tdd_cb.delete(0, 'end')
+        self.tq_cb.delete(0, 'end')
         self.add_btn['state']=DISABLED
         self.find_btn['state']=DISABLED
+        self.newquestion_cb.set('')
+
 
     def buttonFind(self):
-        CQ=donnees.question(self.id_entry.get(),self.tdd_entry.get(),self.tq_entry.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
+        CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
         LP=modele.get_liste_pertinance(CQ)
         foo = []
         for k in range(4):
@@ -61,15 +63,23 @@ class Toplevel1:
         self.newquestion_cb["values"] = foo
 
     def buttonReplace(self):
-        #self.question_text.insert(0,self.newquestion_cb.get())
+        CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
+        LP=modele.get_liste_pertinance(CQ)
         self.id_entry['state']='normal'
         self.id_entry.delete(0, 'end')
         self.id_entry.insert(0,cmp+1)
         self.id_entry['state']=DISABLED
         self.sn_entry.delete(0, 'end')
         self.question_text.delete("1.0",'end-1c')
-        self.tdd_entry.delete(0, 'end')
-        self.tq_entry.delete(0, 'end')
+        self.question_text.insert("1.0",self.newquestion_cb.get())
+        for k in range(4):
+            if LP[k][0].text == self.newquestion_cb.get():
+                self.sn_entry.insert(0, LP[k][0].shortName)
+                self.tdd_cb.set(LP[k][0].typeOfDD)
+                self.tq_cb.set(LP[k][0].categorie)
+                self.anwser_cb.set(LP[k][0].typeOfAnswer)
+        self.newquestion_cb.set('')
+        
 
     def buttonAddAsNext(self):
         self.waiting_list.insert(0,self.newquestion_cb.get())
@@ -81,9 +91,11 @@ class Toplevel1:
         self.question_text.delete("1.0",'end-1c')
         self.tdd_entry.delete(0, 'end')
         self.tq_entry.delete(0, 'end')
+        self.newquestion_cb.set('')
+
 
     def callback(self,event):
-        if (self.sn_entry.get()!='' and self.question_text.get("1.0",'end-1c')!='' and self.tdd_entry.get()!='' and self.tq_entry.get()!=''):
+        if (self.sn_entry.get()!='' and self.question_text.get("1.0",'end-1c')!=''  ):
             self.add_btn['state']='active'
             self.find_btn['state']='active'
         else:
@@ -144,25 +156,23 @@ class Toplevel1:
         self.id_entry.insert(0,cmp);
         self.id_entry['state']=DISABLED
 
-        self.tq_entry = tk.Entry(self.Labelframe1)
-        self.tq_entry.place(relx=0.091, rely=0.42, height=20, relwidth=0.207
+        self.tq_cb = ttk.Combobox(self.Labelframe1,state="readonly")
+        self.tq_cb.place(relx=0.091, rely=0.42, height=20, relwidth=0.207
                 , bordermode='ignore')
-        self.tq_entry.configure(background="white")
-        self.tq_entry.configure(disabledforeground="#a3a3a3")
-        self.tq_entry.configure(font="TkFixedFont")
-        self.tq_entry.configure(foreground="#000000")
-        self.tq_entry.configure(insertbackground="black")
-        self.tq_entry.bind('<KeyRelease>',self.callback)
+        self.tq_cb.configure(textvariable=interface_support.combobox4)
+        self.tq_cb["values"]=['AML/KYC','Asset Management','BCP/DRP','Compliance','Custody','Distribution','Employee','Fund Administration','General Information','Generic/Technical','Governance, Risk and Compliance','Internal audit and control','IT & Business Continuity','Know Your Counterparty','Licence/Authorisation/Regulator','Management  & Ownership','MIFID II','Outsourcing','Policy & Procedure','Regulatory','Regulatory Status','Risk','Tax Information','Transfer Agent']
+        self.tq_cb.current(0)
+        self.tq_cb.configure(takefocus="")
+        self.tq_cb.configure(cursor="fleur")
 
-        self.tdd_entry = tk.Entry(self.Labelframe1)
-        self.tdd_entry.place(relx=0.364, rely=0.222, height=20, relwidth=0.262
+        self.tdd_cb = ttk.Combobox(self.Labelframe1,state="readonly")
+        self.tdd_cb.place(relx=0.364, rely=0.222, height=20, relwidth=0.262
                 , bordermode='ignore')
-        self.tdd_entry.configure(background="white")
-        self.tdd_entry.configure(disabledforeground="#a3a3a3")
-        self.tdd_entry.configure(font="TkFixedFont")
-        self.tdd_entry.configure(foreground="#000000")
-        self.tdd_entry.configure(insertbackground="black")
-        self.tdd_entry.bind('<KeyRelease>',self.callback)
+        self.tdd_cb.configure(textvariable=interface_support.combobox3)
+        self.tdd_cb["values"]=['Common','Depositary Bank','Distribution','Fund Administration','Investment Management','Transfer Agent']
+        self.tdd_cb.current(0)
+        self.tdd_cb.configure(takefocus="")
+        self.tdd_cb.configure(cursor="fleur")
 
         self.sn_entry = tk.Entry(self.Labelframe1)
         self.sn_entry.place(relx=0.364, rely=0.42, height=20, relwidth=0.553
