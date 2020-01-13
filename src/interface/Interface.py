@@ -14,10 +14,6 @@ from donnees import question
 
 
 
-
-
-
-
 def vp_start_gui():
     global val, w, root
     root = tk.Tk()
@@ -58,8 +54,33 @@ class Toplevel1:
     def buttonFind(self):
         CQ=donnees.question(self.id_entry.get(),self.tdd_entry.get(),self.tq_entry.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
         LP=modele.get_liste_pertinance(CQ)
+        foo = []
         for k in range(4):
-            self.newquestion_cb['values']+= LP
+
+            foo.append(LP[k][0].text)
+        self.newquestion_cb["values"] = foo
+
+    def buttonReplace(self):
+        #self.question_text.insert(0,self.newquestion_cb.get())
+        self.id_entry['state']='normal'
+        self.id_entry.delete(0, 'end')
+        self.id_entry.insert(0,cmp+1)
+        self.id_entry['state']=DISABLED
+        self.sn_entry.delete(0, 'end')
+        self.question_text.delete("1.0",'end-1c')
+        self.tdd_entry.delete(0, 'end')
+        self.tq_entry.delete(0, 'end')
+
+    def buttonAddAsNext(self):
+        self.waiting_list.insert(0,self.newquestion_cb.get())
+        self.id_entry['state']='normal'
+        self.id_entry.delete(0, 'end')
+        self.id_entry.insert(0,cmp+1)
+        self.id_entry['state']=DISABLED
+        self.sn_entry.delete(0, 'end')
+        self.question_text.delete("1.0",'end-1c')
+        self.tdd_entry.delete(0, 'end')
+        self.tq_entry.delete(0, 'end')
 
     def callback(self,event):
         if (self.sn_entry.get()!='' and self.question_text.get("1.0",'end-1c')!='' and self.tdd_entry.get()!='' and self.tq_entry.get()!=''):
@@ -68,8 +89,16 @@ class Toplevel1:
         else:
             self.add_btn['state']=DISABLED
             self.find_btn['state']=DISABLED
-
-
+        """ A fix
+        if (len(self.newquestion_cb.get()) != 0):
+            self.replace_btn['state']= 'active'
+        else:
+            self.replace_btn['state']= DISABLED
+        if (len(self.newquestion_cb.get()) != 0):
+            self.next_btn['state']= 'active'
+        else:
+            self.next_btn['state']= DISABLED
+        """
 
 
     def __init__(self, top=None):
@@ -88,15 +117,15 @@ class Toplevel1:
             [('selected', _compcolor), ('active',_ana2color)])
 
         top.geometry("936x588+515+244")
-        top.minsize(120, 1)
+        top.minsize(1924, 1061)
         top.maxsize(1924, 1061)
         top.resizable(0, 0)
         top.title("Good Questions")
         top.configure(background="#d9d9d9")
 
         self.Labelframe1 = tk.LabelFrame(top)
-        self.Labelframe1.place(relx=0.203, rely=0.085, relheight=0.689
-                , relwidth=0.588)
+        self.Labelframe1.place(relx=0.280, rely=0.085, relheight=0.689
+                , relwidth=0.4)
         self.Labelframe1.configure(relief='groove')
         self.Labelframe1.configure(foreground="black")
         self.Labelframe1.configure(text='''Questions''')
@@ -255,38 +284,38 @@ class Toplevel1:
         self.find_btn['state']=DISABLED
 
         self.waiting_list = tk.Listbox(top)
-        self.waiting_list.place(relx=0.032, rely=0.153, relheight=0.531
-                , relwidth=0.122)
+        self.waiting_list.place(relx=0.015, rely=0.153, relheight=0.531
+                , relwidth=0.25)
         self.waiting_list.configure(background="white")
         self.waiting_list.configure(disabledforeground="#a3a3a3")
         self.waiting_list.configure(font="TkFixedFont")
         self.waiting_list.configure(foreground="#000000")
 
         self.Label7 = tk.Label(top)
-        self.Label7.place(relx=0.032, rely=0.102, height=21, width=108)
+        self.Label7.place(relx=0.110, rely=0.102, height=21, width=108)
         self.Label7.configure(background="#d9d9d9")
         self.Label7.configure(disabledforeground="#a3a3a3")
         self.Label7.configure(foreground="#000000")
         self.Label7.configure(text='''Waiting List''')
 
         self.question_list = tk.Listbox(top)
-        self.question_list.place(relx=0.833, rely=0.153, relheight=0.531
-                , relwidth=0.122)
+        self.question_list.place(relx=0.700, rely=0.153, relheight=0.531
+                , relwidth=0.28)
         self.question_list.configure(background="white")
         self.question_list.configure(disabledforeground="#a3a3a3")
         self.question_list.configure(font="TkFixedFont")
         self.question_list.configure(foreground="#000000")
 
         self.Label8 = tk.Label(top)
-        self.Label8.place(relx=0.833, rely=0.102, height=21, width=114)
+        self.Label8.place(relx=0.825, rely=0.102, height=21, width=114)
         self.Label8.configure(background="#d9d9d9")
         self.Label8.configure(disabledforeground="#a3a3a3")
         self.Label8.configure(foreground="#000000")
         self.Label8.configure(text='''Questions List''')
 
 
-        self.replace_btn = tk.Button(top)
-        self.replace_btn.place(relx=0.235, rely=0.799, height=24, width=93)
+        self.replace_btn = tk.Button(top,command=self.buttonReplace)
+        self.replace_btn.place(relx=0.30, rely=0.799, height=24, width=93)
         self.replace_btn.configure(activebackground="#ececec")
         self.replace_btn.configure(activeforeground="#000000")
         self.replace_btn.configure(background="#d9d9d9")
@@ -296,8 +325,9 @@ class Toplevel1:
         self.replace_btn.configure(highlightcolor="black")
         self.replace_btn.configure(pady="0")
         self.replace_btn.configure(text='''Replace current''')
+        #self.replace_btn['state'] = DISABLED
 
-        self.next_btn = tk.Button(top)
+        self.next_btn = tk.Button(top,command=self.buttonAddAsNext)
         self.next_btn.place(relx=0.459, rely=0.799, height=24, width=90)
         self.next_btn.configure(activebackground="#ececec")
         self.next_btn.configure(activeforeground="#000000")
@@ -308,9 +338,10 @@ class Toplevel1:
         self.next_btn.configure(highlightcolor="black")
         self.next_btn.configure(pady="0")
         self.next_btn.configure(text='''Add as next''')
+        #self.next_btn['state'] = DISABLED
 
         self.nosuggest_btn = tk.Button(top)
-        self.nosuggest_btn.place(relx=0.652, rely=0.799, height=24, width=123)
+        self.nosuggest_btn.place(relx=0.610, rely=0.799, height=24, width=123)
         self.nosuggest_btn.configure(activebackground="#ececec")
         self.nosuggest_btn.configure(activeforeground="#000000")
         self.nosuggest_btn.configure(background="#d9d9d9")
