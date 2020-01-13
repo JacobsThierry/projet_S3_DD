@@ -134,3 +134,16 @@ def recupererQuestion(q_id):
 def creeAjouter():
     creeBDD()
     ajouterDonneesDansBDD()
+
+
+def update_pertinance_rejete(ques_source):#mis à jours la pertinence si la question est rejetée
+    id_cible = ques_source.id
+    c.execute('UPDATE QUESTION SET pertinance=? WHERE id=?', (ques_source.pertinance-1,id_cible))
+
+def update_pertinance_choisi(ques_source):#mis à jours la pertinence si la question est prise en compte
+    id_cible = ques_source.id
+    c.execute('UPDATE QUESTION SET pertinance=? WHERE id=?', (ques_source.pertinance-1,id_cible))
+
+    
+    
+

@@ -100,6 +100,10 @@ def getligne(donnee, string):
      for ligne in donnee.findall(string):
          return ligne
 
+def get_pertinance(donnee):
+    for pertinanc in donnee.findall("Pertinence"):
+        return pertinanc
+
 
 
 def testData():
