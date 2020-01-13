@@ -75,6 +75,27 @@ def ajouterDonneeDansBDD(donnee, c):
         
         
     
+
+def updateDonneeDansBDD(donnee, c):
+    data = [donnee.id, donnee.typeOfDD, donnee.categorie, donnee.shortName,
+           donnee.text, donnee.typeOfAnswer]
+    c.execute('UPDATE QUESTION SET (?,?,?,?,?,?)', data)
+    print(donnee.keyWords)
+    for kw in donnee.keyWords:
+        id_kw=get_kw_id(kw)
+        c.execute('''UPDATE POSSEDE SET id_q=? AND id_kw = ?''',[data[0],id_kw])
+
+def deleteDonneeDansBDD(donnee, c):
+    data = [donnee.id, donnee.typeOfDD, donnee.categorie, donnee.shortName,
+           donnee.text, donnee.typeOfAnswer]
+    c.execute('DELETE FROM QUESTION WHERE id_q = ?',(data[0]))
+    print(donnee.keyWords)
+    for kw in donnee.keyWords:
+        id_kw=get_kw_id(kw)
+        c.execute('''DELETE POSSEDE WHERE id_q=? AND id_kw = ?''',[data[0],id_kw])
+
+
+
 def ajouterDonneesDansBDD():
     dt = donnees.getData()
     conn = getConnection()
