@@ -17,7 +17,7 @@ def testBDD(): ##Détruit et recrée la base de donnée local
 def test_recupererQuestions():
     print(sql.recupererQuestions())
 
-#testBDD()
+testBDD()
 #test_kw()
 print(test_recupererQuestions())
 
