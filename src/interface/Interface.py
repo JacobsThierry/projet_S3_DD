@@ -2,19 +2,20 @@
 import sys
 import tkinter as tk
 import tkinter.ttk as ttk
-
-
 import interface_support
 from tkinter.constants import DISABLED
 
 sys.path.insert(1,"../donnees")
 import bagOfWord
 import sql
+import modele
+import donnees
+from donnees import question
 
 
 
 
-    
+
 
 
 def vp_start_gui():
@@ -46,22 +47,33 @@ class Toplevel1:
         self.id_entry['state']='normal'
         self.id_entry.delete(0, 'end')
         self.id_entry.insert(0,cmp+1)
-        self.id_entry['state']=DISABLED   
+        self.id_entry['state']=DISABLED
         self.sn_entry.delete(0, 'end')
         self.question_text.delete("1.0",'end-1c')
         self.tdd_entry.delete(0, 'end')
         self.tq_entry.delete(0, 'end')
-                       
+        self.add_btn['state']=DISABLED
+        self.find_btn['state']=DISABLED
+
+    def buttonFind(self):
+        CQ=donnees.question(self.id_entry.get(),self.tdd_entry.get(),self.tq_entry.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
+        LP=modele.get_liste_pertinance(CQ)
+        for k in range(4):
+            self.newquestion_cb['values']+= LP
+
     def callback(self,event):
         if (self.sn_entry.get()!='' and self.question_text.get("1.0",'end-1c')!='' and self.tdd_entry.get()!='' and self.tq_entry.get()!=''):
             self.add_btn['state']='active'
+            self.find_btn['state']='active'
         else:
             self.add_btn['state']=DISABLED
-    
+            self.find_btn['state']=DISABLED
+
+
 
 
     def __init__(self, top=None):
-        _bgcolor = '#d9d9d9'  
+        _bgcolor = '#d9d9d9'
         _fgcolor = '#000000'
         _compcolor = '#d9d9d9'
         _ana1color = '#d9d9d9'
@@ -112,7 +124,7 @@ class Toplevel1:
         self.tq_entry.configure(foreground="#000000")
         self.tq_entry.configure(insertbackground="black")
         self.tq_entry.bind('<KeyRelease>',self.callback)
-        
+
         self.tdd_entry = tk.Entry(self.Labelframe1)
         self.tdd_entry.place(relx=0.364, rely=0.222, height=20, relwidth=0.262
                 , bordermode='ignore')
@@ -147,7 +159,7 @@ class Toplevel1:
         self.question_text.configure(selectforeground="black")
         self.question_text.configure(wrap="word")
         self.question_text.bind('<KeyRelease>', self.callback)
-        
+
         self.Label1 = tk.Label(self.Labelframe1)
         self.Label1.place(relx=0.091, rely=0.148, height=21, width=58
                 , bordermode='ignore')
@@ -155,7 +167,7 @@ class Toplevel1:
         self.Label1.configure(disabledforeground="#a3a3a3")
         self.Label1.configure(foreground="#000000")
         self.Label1.configure(text='''Unique ID''')
-        
+
 
         self.Label2 = tk.Label(self.Labelframe1)
         self.Label2.place(relx=0.364, rely=0.148, height=21, width=124
@@ -181,7 +193,7 @@ class Toplevel1:
         self.Label4.configure(foreground="#000000")
         self.Label4.configure(text='''Short name''')
 
-        self.anwser_cb = ttk.Combobox(self.Labelframe1)
+        self.anwser_cb = ttk.Combobox(self.Labelframe1,state="readonly")
         self.anwser_cb.place(relx=0.673, rely=0.222, relheight=0.052
                 , relwidth=0.242, bordermode='ignore')
         self.anwser_cb.configure(textvariable=interface_support.combobox)
@@ -189,13 +201,13 @@ class Toplevel1:
         self.anwser_cb.current(0)
         self.anwser_cb.configure(takefocus="")
         self.anwser_cb.configure(cursor="fleur")
-        
-        self.newquestion_cb = ttk.Combobox(top)
+
+        self.newquestion_cb = ttk.Combobox(top,state="readonly")
         self.newquestion_cb.place(relx=0.203, rely=0.867, relheight=0.036
                 , relwidth=0.601)
         self.newquestion_cb.configure(textvariable=interface_support.combobox2)
         self.newquestion_cb.configure(takefocus="")
-        
+
         self.Label5 = tk.Label(self.Labelframe1)
         self.Label5.place(relx=0.655, rely=0.148, height=21, width=94
                 , bordermode='ignore')
@@ -224,7 +236,23 @@ class Toplevel1:
         self.add_btn.configure(highlightcolor="black")
         self.add_btn.configure(pady="0")
         self.add_btn.configure(text='''Add question''')
-        self.add_btn['state']=DISABLED    
+        self.add_btn['state']=DISABLED
+
+
+
+        self.find_btn = tk.Button(self.Labelframe1,command=self.buttonFind)
+        self.find_btn.place(relx=0.800, rely=0.914, height=24, width=82
+                , bordermode='ignore')
+        self.find_btn.configure(activebackground="#ececec")
+        self.find_btn.configure(activeforeground="#000000")
+        self.find_btn.configure(background="#d9d9d9")
+        self.find_btn.configure(disabledforeground="#a3a3a3")
+        self.find_btn.configure(foreground="#000000")
+        self.find_btn.configure(highlightbackground="#d9d9d9")
+        self.find_btn.configure(highlightcolor="black")
+        self.find_btn.configure(pady="0")
+        self.find_btn.configure(text='''Find''')
+        self.find_btn['state']=DISABLED
 
         self.waiting_list = tk.Listbox(top)
         self.waiting_list.place(relx=0.032, rely=0.153, relheight=0.531
@@ -270,7 +298,7 @@ class Toplevel1:
         self.replace_btn.configure(text='''Replace current''')
 
         self.next_btn = tk.Button(top)
-        self.next_btn.place(relx=0.459, rely=0.799, height=24, width=73)
+        self.next_btn.place(relx=0.459, rely=0.799, height=24, width=90)
         self.next_btn.configure(activebackground="#ececec")
         self.next_btn.configure(activeforeground="#000000")
         self.next_btn.configure(background="#d9d9d9")
@@ -297,8 +325,3 @@ class Toplevel1:
 if __name__ == '__main__':
     vp_start_gui()
     conn=sql.getConnection()
-
-
-
-
-
