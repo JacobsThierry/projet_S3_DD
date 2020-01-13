@@ -1,8 +1,9 @@
 import xml.etree.ElementTree as ET
 import bagOfWord
+import nltk
+
 
 class question:
-    
     def __init__(self, idd,typee,categ,sn,t,toa, kw = None, pertinanc = 0): ##crée une question a partire d'une ligne de donnée
         self.id = idd
         self.typeOfDD = typee
@@ -21,7 +22,7 @@ class question:
         for i in self.keyWords:
             kwl += i + "; "
         return ("id = " + self.id + " type = " + self.typeOfDD + " categorie = " + self.categorie + " short name = " + self.shortName +
-                " text = " + self.text + " type of answer = " + self.typeOfAnswer + " key words : " + kwl + "pertinance : " + str(self.pertinance)
+                " text = " + self.text + " type of answer = " + self.typeOfAnswer + " key words : " + kwl + "pertinance : " + str(self.pertinance) +"\n"
                 )
 
     def printData(self):
@@ -44,7 +45,7 @@ class question:
 
 def importData(emplacement):
     tree = ET.parse(emplacement)
-    
+
     return tree.getroot()
 
 def getData():
@@ -61,7 +62,7 @@ def printdata(donnee):
         for child in t:
             data = question(get_id(child), get_type(child), get_categ(child), get_sn(child), get_text(child), get_typpe_of_answ(child))
             print(data)
-    
+
 def get_id(donnee):
     return donnee.tag
 
@@ -79,8 +80,8 @@ def get_sn(donnee):
         return sn.text
 
 def get_text(donnee):
-    for sn in donnee.findall("Question_Text"):
-        return sn.text
+
+        return donnee.text
 
 def get_typpe_of_answ(donnee):
     for sn in donnee.findall("Type_Of_Answer"):
@@ -97,4 +98,4 @@ def testData():
     #print(question_plus_proche(donnee, donnee[0][0]).tag)
     printdata(donnee)
 
-
+testData()

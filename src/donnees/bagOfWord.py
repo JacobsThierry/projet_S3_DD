@@ -13,13 +13,14 @@ def filtreMotsClefs(sent):
          for row in reader:
              for field in row:
                  for w in words:
-                     w = lemmatizer.lemmatize(w)
-                     if field == w:
+                     w = lemmatizer.lemmatize(w.lower())
+                     if field.lower() == w.lower():
                         filtre.append(w)
+
     return filtre
 
 def testBOW():
     ch = "Have you implemented a policy to ensure you offer the funds within your defined Target Market?"
     print(filtreMotsClefs(ch))
 
-
+testBOW()
