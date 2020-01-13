@@ -55,12 +55,16 @@ def get_kw_word(kw_id):
     return -1
 
 def get_kw_q(question):
-    id_q = question.id
+    try:
+        id_q = question.id
+    except:
+        id_q = question
     conn = getConnection()
     c = conn.cursor()
-    
-    for row in c.execute(''' SELECT * FROM POSSEDE WHERE id_q = ?''', (id_q,)):
-        
+    kwl = []
+    for row in c.execute(''' SELECT word FROM POSSEDE, KEYWORD WHERE id_q = (?) AND id_kw = KEYWORD.id''', (id_q,)):
+        kwl.append(row[0])
+    return kwl
 
 def ajouterDonneeDansBDD(donnee, c):
     data = [donnee.id, donnee.typeOfDD, donnee.categorie, donnee.shortName,
@@ -104,13 +108,25 @@ def ajouterDonneesDansBDD():
         ajouterDonneeDansBDD(i,c)
     conn.commit()
 
-def recupererQuestion():
+def recupererQuestions():
     conn = getConnection()
     c = conn.cursor()
     dt = []
     for row in c.execute('SELECT * FROM QUESTION'):
-        
-        dt.append(donnees.question(row[0],row[1], row[2], row[3], row[4]
+        q = donnees.question(row[0],row[1], row[2], row[3], row[4], row[5])
+        q.keyWords = get_kw_q(q.id)
+        if q != None:
+            dt.append(q)
+    return dt
+
+def recupererQuestion(q_id):
+    conn = getConnection()
+    c = conn.cursor()
+    for row in c.execute('SELECT * FROM QUESTION WHERE QUESTION.id = (?)', (q_id,)):
+        q = donnees.question(row[0],row[1], row[2], row[3], row[4], row[5])
+        qkw = get_kw_q(q.id)
+        q.keyWords = get_kw_q(q.id)
+    return q
 
 
 def creeAjouter():

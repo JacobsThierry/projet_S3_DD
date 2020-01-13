@@ -3,7 +3,7 @@ import bagOfWord
 
 class question:
     
-    def __init__(self, idd,typee,categ,sn,t,toa kw = None): ##crée une question a partire d'une ligne de donnée
+    def __init__(self, idd,typee,categ,sn,t,toa, kw = None): ##crée une question a partire d'une ligne de donnée
         self.id = idd
         self.typeOfDD = typee
         self.categorie = categ
@@ -15,6 +15,12 @@ class question:
         else:
             self.keyWords = kw
 
+    def __str__(self):
+        kw = ""
+        for i in self.keyWords:
+            kw = kw + i + " "
+        return ("question n°" + self.id + " type : " + self.typeOfDD + " categorie : " + self.categorie + " shortName : " + self.shortName + " texte : " + self.text + " type of answer : " + self.typeOfAnswer + " key word : " + kw)
+            
     def printData(self):
         print(self.id)
         print("\t", self.typeOfDD)
@@ -50,8 +56,8 @@ def getData():
 def printdata(donnee):
     for t in donnee:
         for child in t:
-            data = question(get_id(child), get_type(child), get_categ(child), get_sn(child), get_text(child), get_typpe_of_answ(child))
-            data.printData()
+            data = question(get_id(child), get_type(child), get_categ(child), get_sn(child), get_texte(child), get_typpe_of_answ(child))
+            print(data)
     
 def get_id(donnee):
     return donnee.tag
@@ -87,6 +93,5 @@ def testData():
     donnee = importData("../../datas/Questions_IUT_121219.xml")
     #print(question_plus_proche(donnee, donnee[0][0]).tag)
     printdata(donnee)
-
 
 

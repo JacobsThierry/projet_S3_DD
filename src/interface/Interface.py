@@ -5,9 +5,13 @@ import tkinter.ttk as ttk
 
 
 import interface_support
+from tkinter.constants import DISABLED
+
+sys.path.insert(1,"../donnees")
 import bagOfWord
 import sql
-from tkinter.constants import DISABLED
+
+
 
 
     

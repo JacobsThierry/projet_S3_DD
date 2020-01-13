@@ -13,5 +13,11 @@ def testBDD(): ##Détruit et recrée la base de donnée local
     sql.creeBDD()
     sql.ajouterDonneesDansBDD() 
 
-testBDD()
+
+def test_recupererQuestions():
+    print(sql.recupererQuestions())
+
+#testBDD()
 #test_kw()
+print(test_recupererQuestions())
+
