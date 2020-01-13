@@ -41,20 +41,33 @@ def get_kw_id(kw):
     c = conn.cursor()
     for row in c.execute(''' SELECT id FROM KEYWORD WHERE word = (?) ''', (kw,)):
         return row[0]
-    c.execute(''' INSERT INTO KEYWORD (word) VALUEs (?) ''', (kw,))
     for row in c.execute(''' SELECT id FROM KEYWORD WHERE word = (?) ''', (kw,)):
         return row[0]
     return -1
+
+def get_kw_word(kw_id):
+    conn = getConnection()
+    c = conn.cursor()
+    for row in c.execute(''' SELECT id FROM KEYWORD WHERE word = (?) ''', (kw,)):
+        return row[0]
+    for row in c.execute(''' SELECT id FROM KEYWORD WHERE word = (?) ''', (kw,)):
+        return row[0]
+    return -1
+
+def get_kw_q(question):
+    id_q = question.id
+    conn = getConnection()
+    c = conn.cursor()
     
+    for row in c.execute(''' SELECT * FROM POSSEDE WHERE id_q = ?''', (id_q,)):
+        
 
 def ajouterDonneeDansBDD(donnee, c):
     data = [donnee.id, donnee.typeOfDD, donnee.categorie, donnee.shortName,
             donnee.text, donnee.typeOfAnswer]
     c.execute('INSERT INTO QUESTION VALUES (?,?,?,?,?,?)', data)
-    print(donnee.keyWords)
     for kw in donnee.keyWords:
         id_kw = get_kw_id(kw)
-        print(c.execute(''' SELECT * FROM POSSEDE WHERE id_q = ? AND id_kw = ? ''', [data[0], id_kw]))
         c.execute(''' SELECT * FROM POSSEDE WHERE id_q = ? AND id_kw = ? ''', (data[0], id_kw))
         r = c.fetchone()
         if r == None:
@@ -62,10 +75,6 @@ def ajouterDonneeDansBDD(donnee, c):
         
         
     
-    
-    
-
-
 def ajouterDonneesDansBDD():
     dt = donnees.getData()
     conn = getConnection()
@@ -79,7 +88,8 @@ def recupererQuestion():
     c = conn.cursor()
     dt = []
     for row in c.execute('SELECT * FROM QUESTION'):
-        print(row)
+        
+        dt.append(donnees.question(row[0],row[1], row[2], row[3], row[4]
 
 
 def creeAjouter():

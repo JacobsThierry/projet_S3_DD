@@ -3,14 +3,17 @@ import bagOfWord
 
 class question:
     
-    def __init__(self, donnee): ##crée une question a partire d'une ligne de donnée
-        self.id = get_id(donnee)
-        self.typeOfDD = get_type(donnee)
-        self.categorie = get_categ(donnee)
-        self.shortName = get_sn(donnee)
-        self.text = get_texte(donnee)
-        self.typeOfAnswer = get_typpe_of_answ(donnee)
-        self.keyWords = bagOfWord.filtreMotsClefs(self.text)
+    def __init__(self, idd,typee,categ,sn,t,toa kw = None): ##crée une question a partire d'une ligne de donnée
+        self.id = idd
+        self.typeOfDD = typee
+        self.categorie = categ
+        self.shortName = sn
+        self.text = t
+        self.typeOfAnswer = toa
+        if(kw == None):
+            self.keyWords = bagOfWord.filtreMotsClefs(self.text)
+        else:
+            self.keyWords = kw
 
     def printData(self):
         print(self.id)
@@ -39,15 +42,15 @@ def getData():
     donnee = importData("../../datas/Questions_IUT_121219.xml")
     dt = []
     for t in donnee:
-        for q in t:
-            laq = question(q)
+        for child in t:
+            laq = question(get_id(child), get_type(child), get_categ(child), get_sn(child), get_text(child), get_typpe_of_answ(child))
             dt.append(laq)
     return dt
 
 def printdata(donnee):
     for t in donnee:
         for child in t:
-            data = question(child)
+            data = question(get_id(child), get_type(child), get_categ(child), get_sn(child), get_text(child), get_typpe_of_answ(child))
             data.printData()
     
 def get_id(donnee):
