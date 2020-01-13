@@ -16,7 +16,13 @@ class question:
         else:
             self.keyWords = kw
 
-        
+    def __str__(self):
+        kwl = ""
+        for i in self.keyWords:
+            kwl += i + "; "
+        return ("id = " + self.id + " type = " + self.typeOfDD + " categorie = " + self.categorie + " short name = " + self.shortName +
+                " text = " + self.text + " type of answer = " + self.typeOfAnswer + " key words : " + kwl + "pertinance : " + str(self.pertinance)
+                )
 
     def printData(self):
         print(self.id)
@@ -54,7 +60,7 @@ def printdata(donnee):
     for t in donnee:
         for child in t:
             data = question(get_id(child), get_type(child), get_categ(child), get_sn(child), get_text(child), get_typpe_of_answ(child))
-            data.printData()
+            print(data)
     
 def get_id(donnee):
     return donnee.tag
@@ -90,6 +96,5 @@ def testData():
     donnee = importData("../../datas/Questions_IUT_121219.xml")
     #print(question_plus_proche(donnee, donnee[0][0]).tag)
     printdata(donnee)
-
 
 

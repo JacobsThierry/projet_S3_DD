@@ -1,8 +1,11 @@
 import donnees
+import sql
+from operator import itemgetter
+
 
 def distance_type_DD(dd1, dd2): ##distance entre les types de DD
     distance_identique = 0
-    distance_common = 1
+    distance_common = 0
     distance_diff = 2
 
     if(dd1 == "Common" or dd2 == "Common"):
@@ -26,3 +29,14 @@ def pertinance_base(q1, q2):
     
     return base
 
+def get_pertinance(q1,q2):
+    return pertinance_base(q1,q2) + q2.pertinance
+
+
+def get_liste_pertinance(q1):
+    questions = sql.recupererQuestions()
+    liste = []
+    for q2 in questions:
+        liste.append((q2, get_pertinance(q1,q2)))
+    l2 = sorted(liste, key=itemgetter(1), reverse=True)
+    return l2
