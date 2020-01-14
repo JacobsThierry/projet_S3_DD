@@ -29,9 +29,9 @@ def importData(emplacement):
 
 
 def getDataCateg():
-    donnee = importData("../../datas/Questions_IUT_121219.xml")
+    donneeCateg = importData("../../datas/Questions_IUT_121219.xml")
     dt = []
-    for t in donnee:
+    for t in donneeCateg:
         for child in t:
             categ = categorie(get_categ(child))
             dt.append(categ)
@@ -40,8 +40,8 @@ def getDataCateg():
 
 
 
-def printdataCateg(donnee):
-    for t in donnee:
+def printdataCateg(donneeCateg):
+    for t in donneeCateg:
         for child in t:
             data = categorie(get_categ(child))
             print(data)
@@ -76,8 +76,8 @@ def get_pertinance(donnee):
         return pertinanc
 
 def testData():
-    donnee = importData("../../datas/Questions_IUT_121219.xml")
+    donneeCateg = importData("../../datas/Questions_IUT_121219.xml")
     #print(question_plus_proche(donnee, donnee[0][0]).tag)
    
-    printdataCateg(donnee)
+    printdataCateg(donneeCateg)
   

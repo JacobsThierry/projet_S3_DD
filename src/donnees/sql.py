@@ -106,8 +106,10 @@ def ajouterDonneeDansBDD(donnee, c):
         
     data = [donnee.id,id_type_dd,id_categ , donnee.shortName,
             donnee.text, donnee.typeOfAnswer, donnee.pertinance]
+
     
     c.execute('INSERT INTO QUESTION VALUES (?,?,?,?,?,?,?)', data)
+
     for kw in donnee.keyWords:
         id_kw = get_kw_id(kw)
         c.execute(''' SELECT * FROM POSSEDE WHERE id_q = ? AND id_kw = ? ''', (data[0], id_kw))
@@ -156,6 +158,22 @@ def ajouterDonneesDansBDD():
         ajouterDonneeDansBDD(i,c)
     conn.commit()
     conn.close()
+
+def ajouterDonneesCategDansBDD():
+    dt = donneesCateg.getDataCateg()
+    conn = getConnection()
+    c = conn.cursor()
+    for i in dt:
+        ajouterDonneeDansBDD(i,c)
+    conn.commit()
+
+def ajouterDonneesTypeddDansBDD():
+    dt = donneesTypedd.getDataType()
+    conn = getConnection()
+    c = conn.cursor()
+    for i in dt:
+        ajouterDonneeDansBDD(i,c)
+    conn.commit()
 
 def recupererQuestions():
     conn = getConnection()
@@ -225,4 +243,6 @@ def recupererTypeofdd(dd_id):
 def creeAjouter():
     creeBDD()
     ajouterDonneesDansBDD()
+    ajouterDonneesCategDansBDD()
+    ajouterDonneesTypeddDansBDD()
 

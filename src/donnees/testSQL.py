@@ -9,7 +9,7 @@ def testBDD(): ##Détruit et recrée la base de donnée local
     try:
         os.remove(path)
     except:
-        pass
+        print("echec de la suppression")
     sql.creeBDD()
     sql.ajouterDonneesDansBDD() 
 

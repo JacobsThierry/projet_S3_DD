@@ -28,9 +28,9 @@ def importData(emplacement):
 
 
 def getDataType():
-    donnee = importData("../../datas/Questions_IUT_121219.xml")
+    donneeType = importData("../../datas/Questions_IUT_121219.xml")
     dt = []
-    for t in donnee:
+    for t in donneeType:
         for child in t:
             typedd = typeofdd(get_type(child))
             dt.append(typedd)
@@ -40,8 +40,8 @@ def getDataType():
 
 
 
-def printdataType(donnee):
-    for t in donnee:
+def printdataType(donneeType):
+    for t in donneeType:
         for child in t:
             data = typeofdd(get_type(child))
             print(data)
@@ -81,8 +81,8 @@ def get_pertinance(donnee):
         return pertinanc
 
 def testData():
-    donnee = importData("../../datas/Questions_IUT_121219.xml")
+    donneeType = importData("../../datas/Questions_IUT_121219.xml")
     #print(question_plus_proche(donnee, donnee[0][0]).tag)
 
    
-    printdataType(donnee)
+    printdataType(donneeType)
