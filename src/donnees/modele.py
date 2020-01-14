@@ -19,7 +19,6 @@ def distance_type_DD(dd1, dd2): ##distance entre les types de DD
 def distance_categ_DD(c1, c2): ##distance entre les types de DD
     distance_identique = 0
     distance_diff = 1
-
     if(c1 == c2):
         return distance_diff
     else:
