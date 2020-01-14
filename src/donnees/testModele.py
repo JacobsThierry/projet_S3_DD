@@ -18,6 +18,6 @@ def test_modele():
     for i in l:
         print(i[0])
         print(i[1])
-    
+
 
 test_modele()
