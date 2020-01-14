@@ -390,7 +390,7 @@ class Toplevel1:
         self.replace_btn['state'] = DISABLED
 
         self.next_btn = tk.Button(top,command=self.buttonAddAsNext)
-        self.next_btn.place(relx=0.459, rely=0.799, height=24, width=90)
+        self.next_btn.place(relx=0.459, rely=0.799, height=24, width=110)
         self.next_btn.configure(activebackground="#ececec")
         self.next_btn.configure(activeforeground="#000000")
         self.next_btn.configure(background="#d9d9d9")
@@ -399,7 +399,7 @@ class Toplevel1:
         self.next_btn.configure(highlightbackground="#d9d9d9")
         self.next_btn.configure(highlightcolor="black")
         self.next_btn.configure(pady="0")
-        self.next_btn.configure(text='''Add as next''')
+        self.next_btn.configure(text='''Add to waiting list''')
         self.next_btn['state'] = DISABLED
 
         self.nosuggest_btn = tk.Button(top)
