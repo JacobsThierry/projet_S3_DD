@@ -43,6 +43,8 @@ class question:
         print("\t", type(self.typeOfAnswer))
         print("\t", type(self.keyWords))
 
+
+
 def importData(emplacement):
     tree = ET.parse(emplacement)
 
@@ -57,11 +59,16 @@ def getData():
             dt.append(laq)
     return dt
 
+
+
 def printdata(donnee):
     for t in donnee:
         for child in t:
             data = question(get_id(child), get_type(child), get_categ(child), get_sn(child), get_text(child), get_typpe_of_answ(child))
             print(data)
+
+
+
 
 def get_id(donnee):
     return donnee.tag
@@ -108,3 +115,4 @@ def testData():
     donnee = importData("../../datas/Questions_IUT_121219.xml")
     #print(question_plus_proche(donnee, donnee[0][0]).tag)
     printdata(donnee)
+
