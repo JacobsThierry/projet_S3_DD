@@ -44,7 +44,18 @@ def pertinance_base(q1, q2):
     return base
 
 def get_pertinance(q1,q2):
-    return pertinance_base(q1,q2) + q2.pertinance
+    
+    per = pertinance_base(q1,q2)
+
+    for kw in q1.keyWords:
+        if kw in q2.keyWords:
+            per += sql.get_pertinance_kw(q2)
+    per+= sql.get_pertinance_type_dd(q2, q1.typeOfDD)
+    per+=sql.get_pertinance_categorie(q2, q1.categorie, reduction_type_dd)
+    per+=sql.get_pertinance_global(q2)
+    
+    
+    return 
 
 def get_liste_pertinance(q1): #retourne une liste de tuple (question, pertinance) dans l'ordre de la plus pertinance a la moins pertinante
     questions = sql.recupererQuestions()
@@ -74,20 +85,19 @@ def update_pertinance_choisi(ques_source, question_proposer):
     reduction_type_dd = 1
     reduction_categorie = 1
     reduction_global = 1
-    print(len(ques_source.keyWords))
     if(len(ques_source.keyWords)>0):
         for kw in ques_source.keyWords:
             if kw in question_proposer.keyWords:
                 sql.update_pertinance_kw(ques_proposer, kw, reduction_kw)
+
     sql.update_pertinance_type_dd(ques_proposer, ques_source.typeOfDD, reduction_type_dd)
     sql.update_pertinance_categorie(ques_proposer, ques_source.categorie, reduction_type_dd)
     sql.update_pertinance_global(ques_proposer, reduction_global)
 
-
-
 def update_pertinance_waiting_list(question_proposer):
     reduction_global = 5
     sql.update_pertinance_global(ques_proposer, reduction_global)
+
 
 
 
