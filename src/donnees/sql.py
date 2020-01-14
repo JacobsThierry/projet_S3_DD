@@ -84,8 +84,8 @@ def ajouterDonneeDansBDD(donnee, c):
     dataCateg = [donnee.lib_categ]
     dataType = [donnee.lib_type_dd]
     c.execute('INSERT INTO QUESTION VALUES (?,?,?,?,?)', data)
-    c.execute('INSERT INTO CATEGORIE VALUES (?,?)',dataCateg)
-    c.execute('INSERT INTO TYPE_OF_DD VALUES (?,?)',dataType)
+    c.execute('INSERT INTO CATEGORIE VALUES (?)',dataCateg)
+    c.execute('INSERT INTO TYPE_OF_DD VALUES (?)',dataType)
     for kw in donnee.keyWords:
         id_kw = get_kw_id(kw)
         c.execute(''' SELECT * FROM POSSEDE WHERE id_q = ? AND id_kw = ? ''', (data[0], id_kw))
@@ -133,6 +133,22 @@ def deleteDonneeDansBDD(donnee, c):
 
 def ajouterDonneesDansBDD():
     dt = donnees.getData()
+    conn = getConnection()
+    c = conn.cursor()
+    for i in dt:
+        ajouterDonneeDansBDD(i,c)
+    conn.commit()
+
+def ajouterDonneesCategDansBDD():
+    dt = donneesCateg.getDataCateg()
+    conn = getConnection()
+    c = conn.cursor()
+    for i in dt:
+        ajouterDonneeDansBDD(i,c)
+    conn.commit()
+
+def ajouterDonneesTypeddDansBDD():
+    dt = donneesTypedd.getDataType()
     conn = getConnection()
     c = conn.cursor()
     for i in dt:
@@ -199,4 +215,6 @@ def recupererTypeofdd(dd_id):
 def creeAjouter():
     creeBDD()
     ajouterDonneesDansBDD()
+    ajouterDonneesCategDansBDD()
+    ajouterDonneesTypeddDansBDD()
 

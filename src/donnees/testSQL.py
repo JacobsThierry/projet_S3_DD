@@ -11,7 +11,9 @@ def testBDD(): ##Détruit et recrée la base de donnée local
     except:
         pass
     sql.creeBDD()
-    sql.ajouterDonneesDansBDD() 
+    sql.ajouterDonneesDansBDD()
+    sql.ajouterDonneesCategDansBDD()
+    sql.ajouterDonneesTypeddDansBDD() 
 
 
 def test_recupererQuestions():
