@@ -25,6 +25,3 @@ def test_recupererTypeofdds():
 
 testBDD()
 #test_kw()
-print(test_recupererQuestions())
-print(test_recupererCategories())
-print(test_recupererTypeofdds())
