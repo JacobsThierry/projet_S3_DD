@@ -54,6 +54,11 @@ class Toplevel1:
         self.anwser_cb.current(0)
         self.tdd_cb.current(0)
         self.tq_cb.current(0)
+        foo = []
+        self.newquestion_cb["values"] = foo
+        self.newquestion_cb.set('')
+        self.replace_btn['state']= DISABLED
+        self.next_btn['state']= DISABLED
 
     def onselect(self,event):
         print("e")
