@@ -39,6 +39,14 @@ def destroy_Toplevel1():
 
 class Toplevel1:
     def buttonAdd(self):
+        foo = []
+        foo = self.newquestion_cb["values"] 
+        if(foo!='' and self.question_text.get("1.0",'end-1c') not in foo):
+            for k in range(len(foo)):
+                laq=donnees.findQ(self.newquestion_cb.get())
+                modele.update_pertinance_rejete(CQ,laq)
+                print("b")
+        
         self.question_list.insert(0,self.question_text.get("1.0",'end-1c'))
         self.id_entry['state']='normal'
         self.id_entry.delete(0, 'end')
@@ -81,11 +89,21 @@ class Toplevel1:
         LP=modele.get_liste_pertinance(CQ)
         foo = []
         for k in range(4):
-
             foo.append(LP[k][0].text)
         self.newquestion_cb["values"] = foo
 
     def buttonReplace(self):
+        foo = []
+        foo = self.newquestion_cb["values"] 
+        CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
+        for k in range(len(foo)):
+            laq=donnees.findQ(self.newquestion_cb.get())
+            if k == self.newquestion_cb.get():
+                modele.update_pertinance_choisi(CQ,laq)
+                print("a")
+            else:
+                modele.update_pertinance_rejete(CQ,laq)
+                print("b")
         self.id_entry['state']='normal'
         self.id_entry.delete(0, 'end')
         self.id_entry.insert(0,cmp+1)
@@ -105,6 +123,13 @@ class Toplevel1:
         self.next_btn['state']= DISABLED
 
     def buttonAddAsNext(self):
+        foo = []
+        foo = self.newquestion_cb["values"] 
+        CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
+        for k in range(len(foo)):
+            laq=donnees.findQ(self.newquestion_cb.get())
+            if k == self.newquestion_cb.get():
+                modele.update_pertinance_waiting_list(laq)
         self.waiting_list.insert(0,self.newquestion_cb.get())
         self.id_entry['state']='normal'
         self.id_entry.delete(0, 'end')
