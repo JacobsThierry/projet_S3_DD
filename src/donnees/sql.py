@@ -12,7 +12,7 @@ def creeBDD():
     conn = getConnection()
     c = conn.cursor()
     c.execute(''' CREATE TABLE QUESTION
-                    (id text PRIMARY KEY, typeOfDD text, shortName text, text text, typeOfAnswer text, pertinance INTEGER DEFAULT 0 )''')
+                    (id text PRIMARY KEY, shortName text, text text, typeOfAnswer text, pertinance INTEGER DEFAULT 0 )''')
 
     c.execute(''' CREATE TABLE KEYWORD
                     (id INTEGER PRIMARY KEY, word text)''')
@@ -23,6 +23,10 @@ def creeBDD():
                     (id_type_dd INTEGER PRIMARY KEY, lib_type_dd TEXT)''')
     c.execute('''CREATE TABLE CATEGORIE
                     (id_categ INTEGER PRIMARY KEY, lib_categ TEXT)''')
+    c.execute('''CREATE TABLE EST_DE_CATEGORIE
+                    (id_q INTEGER PRIMARY KEY, id_categ INTEGER, pertinence INTEGER DEFAULT 0)''')
+    c.execute('''CREATE TABLE EST_DE_TYPE
+                    (id_q INTEGER PRIMARY KEY, id_type_dd INTEGER, pertinence INTEGER DEFAULT 0)''')
     keyw = []
 
     with open('../../datas/BOW.csv') as fp:
@@ -71,30 +75,30 @@ def get_kw_q(question):
     return kwl
 
 def ajouterDonneeDansBDD(donnee, c):
-    data = [donnee.id, donnee.typeOfDD, donnee.shortName,
+    data = [donnee.id, donnee.shortName,
             donnee.text, donnee.typeOfAnswer, donnee.pertinance]
-    c.execute('INSERT INTO QUESTION VALUES (?,?,?,?,?, ?)', data)
+    c.execute('INSERT INTO QUESTION VALUES (?,?,?,?,?)', data)
     for kw in donnee.keyWords:
         id_kw = get_kw_id(kw)
         c.execute(''' SELECT * FROM POSSEDE WHERE id_q = ? AND id_kw = ? ''', (data[0], id_kw))
         r = c.fetchone()
         if r == None:
-            c.execute('INSERT INTO POSSEDE VALUES (?,?)', (data[0], id_kw))
+            c.execute('INSERT INTO POSSEDE VALUES (?,?,?)', (data[0], id_kw, 0))
 
 
 
 
 def updateDonneeDansBDD(donnee, c):
-    data = [donnee.id, donnee.typeOfDD, donnee.shortName,
+    data = [donnee.id, donnee.shortName,
            donnee.text, donnee.typeOfAnswer, donnee.pertinance]
-    c.execute('UPDATE QUESTION SET (?,?,?,?,?,?)', data)
+    c.execute('UPDATE QUESTION SET (?,?,?,?,?)', data)
     for kw in donnee.keyWords:
         id_kw=get_kw_id(kw)
         c.execute('''UPDATE POSSEDE SET id_q=? AND id_kw = ?''',[data[0],id_kw])
 
 def deleteDonneeDansBDD(donnee, c):
-    data = [donnee.id, donnee.typeOfDD, donnee.shortName,
-           donnee.text, donnee.typeOfAnswer]
+    data = [donnee.id,  donnee.shortName,
+           donnee.text, donnee.typeOfAnswer, donnee.pertinance]
     c.execute('DELETE FROM QUESTION WHERE id_q = ?',(data[0]))
     for kw in donnee.keyWords:
         id_kw=get_kw_id(kw)
