@@ -27,6 +27,7 @@ def creeBDD():
                     (id_q INTEGER PRIMARY KEY, id_categ INTEGER, pertinence INTEGER DEFAULT 0)''')
     c.execute('''CREATE TABLE EST_DE_TYPE
                     (id_q INTEGER PRIMARY KEY, id_type_dd INTEGER, pertinence INTEGER DEFAULT 0)''')
+    
     keyw = []
 
     with open('../../datas/BOW.csv') as fp:
