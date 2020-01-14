@@ -44,10 +44,10 @@ def pertinance_base(q1, q2):
     return base
 
 def get_pertinance(q1,q2):
+    
+    per = pertinance_base(q1,q2)
 
-    per += pertinance_base(q1,q2)
-
-    for kw in q1.:
+    for kw in q1.keyWords:
         if kw in q2.keyWords:
             per += sql.get_pertinance_kw(q2)
     per+= sql.get_pertinance_type_dd(q2, q1.typeOfDD)

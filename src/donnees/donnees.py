@@ -104,8 +104,6 @@ def get_pertinance(donnee):
     for pertinanc in donnee.findall("Pertinence"):
         return pertinanc
 
-
-
 def testData():
     donnee = importData("../../datas/Questions_IUT_121219.xml")
     #print(question_plus_proche(donnee, donnee[0][0]).tag)
