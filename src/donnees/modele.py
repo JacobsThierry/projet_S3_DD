@@ -81,25 +81,22 @@ def update_pertinance_rejete(ques_source, question_proposer):
 
 
 def update_pertinance_choisi(ques_source, question_proposer):
-    reduction_kw = 1
-    reduction_type_dd = 1
-    reduction_categorie = 1
-    reduction_global = 1
+    reduction_kw = 5
+    reduction_type_dd = 5
+    reduction_categorie = 5
+    reduction_global = 5
     if(len(ques_source.keyWords)>0):
         for kw in ques_source.keyWords:
             if kw in question_proposer.keyWords:
                 sql.update_pertinance_kw(ques_proposer, kw, reduction_kw)
-
     sql.update_pertinance_type_dd(ques_proposer, ques_source.typeOfDD, reduction_type_dd)
     sql.update_pertinance_categorie(ques_proposer, ques_source.categorie, reduction_type_dd)
     sql.update_pertinance_global(ques_proposer, reduction_global)
 
+
 def update_pertinance_waiting_list(question_proposer):
     reduction_global = 5
     sql.update_pertinance_global(ques_proposer, reduction_global)
-
-
-
 
 
 
