@@ -26,12 +26,11 @@ def pertinance_base(q1, q2):
         if kw not in q1.keyWords:
             base-=1
     base -= distance_type_DD(q1.typeOfDD, q2.typeOfDD)
-    
+
     return base
 
 def get_pertinance(q1,q2):
     return pertinance_base(q1,q2) + q2.pertinance
-
 
 def get_liste_pertinance(q1): #retourne une liste de tuple (question, pertinance) dans l'ordre de la plus pertinance a la moins pertinante
     questions = sql.recupererQuestions()

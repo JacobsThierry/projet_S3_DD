@@ -71,7 +71,7 @@ def findQ(Q):
     for t in donnee:
         for child in t:
             if get_text(child)==Q:
-               
+
                 laq=question(get_id(child), get_type(child), get_categ(child), get_sn(child), get_text(child), get_typpe_of_answ(child))
                 return laq
 
@@ -110,5 +110,3 @@ def testData():
     donnee = importData("../../datas/Questions_IUT_121219.xml")
     #print(question_plus_proche(donnee, donnee[0][0]).tag)
     printdata(donnee)
-
-testData()

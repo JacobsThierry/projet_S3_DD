@@ -13,10 +13,10 @@ def creeBDD():
     c = conn.cursor()
     c.execute(''' CREATE TABLE QUESTION
     (id text PRIMARY KEY, typeOfDD text, categorie text, shortName text, text text, typeOfAnswer text, pertinance INTEGER DEFAULT 0 )''')
-    
+
     c.execute(''' CREATE TABLE KEYWORD
                     (id INTEGER PRIMARY KEY, word text)''')
-    
+
     c.execute(''' CREATE TABLE POSSEDE
                     (id_q text, id_kw integer)''')
     keyw = []
@@ -27,10 +27,10 @@ def creeBDD():
         while line:
             keyw.append(line.strip())
             line = fp.readline()
-        
+
     for w in keyw:
-    
-        c.execute(''' INSERT INTO KEYWORD (word) VALUEs (?) ''', (w,))
+
+        c.execute(""" INSERT INTO KEYWORD (word) VALUEs (?) """, (w,))
     conn.commit()
 
 def get_kw_id(kw):
@@ -76,15 +76,14 @@ def ajouterDonneeDansBDD(donnee, c):
         r = c.fetchone()
         if r == None:
             c.execute('INSERT INTO POSSEDE VALUES (?,?)', (data[0], id_kw))
-        
-        
-    
+
+
+
 
 def updateDonneeDansBDD(donnee, c):
     data = [donnee.id, donnee.typeOfDD, donnee.categorie, donnee.shortName,
            donnee.text, donnee.typeOfAnswer, donnee.pertinance]
     c.execute('UPDATE QUESTION SET (?,?,?,?,?,?,?)', data)
-    print(donnee.keyWords)
     for kw in donnee.keyWords:
         id_kw=get_kw_id(kw)
         c.execute('''UPDATE POSSEDE SET id_q=? AND id_kw = ?''',[data[0],id_kw])
@@ -93,7 +92,6 @@ def deleteDonneeDansBDD(donnee, c):
     data = [donnee.id, donnee.typeOfDD, donnee.categorie, donnee.shortName,
            donnee.text, donnee.typeOfAnswer]
     c.execute('DELETE FROM QUESTION WHERE id_q = ?',(data[0]))
-    print(donnee.keyWords)
     for kw in donnee.keyWords:
         id_kw=get_kw_id(kw)
         c.execute('''DELETE POSSEDE WHERE id_q=? AND id_kw = ?''',[data[0],id_kw])
@@ -135,7 +133,6 @@ def creeAjouter():
     creeBDD()
     ajouterDonneesDansBDD()
 
-
 def update_pertinance_rejete(ques_source):#mis à jours la pertinence si la question est rejetée
     id_cible = ques_source.id
     c.execute('UPDATE QUESTION SET pertinance=? WHERE id=?', (ques_source.pertinance-1,id_cible))
@@ -143,7 +140,3 @@ def update_pertinance_rejete(ques_source):#mis à jours la pertinence si la ques
 def update_pertinance_choisi(ques_source):#mis à jours la pertinence si la question est prise en compte
     id_cible = ques_source.id
     c.execute('UPDATE QUESTION SET pertinance=? WHERE id=?', (ques_source.pertinance-1,id_cible))
-
-    
-    
-
