@@ -20,7 +20,6 @@ def vp_start_gui():
     interface_support.set_Tk_var()
     top = Toplevel1 (root)
     interface_support.init(root, top)
-    root.attributes("-fullscreen", True)
     root.mainloop()
 
 w = None
@@ -98,7 +97,7 @@ class Toplevel1:
         foo = []
         foo = self.newquestion_cb["values"] 
         CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
-        for k in range(len(foo)):
+        for k in foo:
             laq=donnees.findQ(self.newquestion_cb.get())
             if k == self.newquestion_cb.get():
                 modele.update_pertinance_choisi(CQ,laq)
@@ -182,7 +181,7 @@ class Toplevel1:
             [('selected', _compcolor), ('active',_ana2color)])
 
         top.geometry("936x588+515+244")
-        top.minsize(1924, 1061)
+        top.minsize(1080, 720)
         top.maxsize(1924, 1061)
         top.resizable(0, 0)
         top.title("Good Questions")
