@@ -78,13 +78,34 @@ def get_kw_q(question):
 def ajouterDonneeDansBDD(donnee, c):
     data = [donnee.id, donnee.shortName,
             donnee.text, donnee.typeOfAnswer, donnee.pertinance]
+    dataCateg = [donnee.id_categ, donnee.lib_categ]
+    dataType = [donnee.id_type_dd, donnee.lib_type_dd]
     c.execute('INSERT INTO QUESTION VALUES (?,?,?,?,?)', data)
+    c.execute('INSERT INTO CATEGORIE VALUES (?,?)',dataCateg)
+    c.execute('INSERT INTO TYPE_OF_DD VALUES (?,?)',dataType)
     for kw in donnee.keyWords:
         id_kw = get_kw_id(kw)
         c.execute(''' SELECT * FROM POSSEDE WHERE id_q = ? AND id_kw = ? ''', (data[0], id_kw))
         r = c.fetchone()
         if r == None:
             c.execute('INSERT INTO POSSEDE VALUES (?,?,?)', (data[0], id_kw, 0))
+
+    c.execute('''SELECT * FROM EST_DE_CATEGORIE WHERE id_q=? AND id_categ=?''',(data[0],dataCateg[0]))
+    r2 = c.fetchone()
+    if r2 == None:
+        c.execute('INSERT * FROM EST_DE_CATEGORIE VALUES (?,?,?)',(data[0],dataCateg[0],0))
+
+    c.execute('''SELECT * FROM EST_DE_TYPE WHERE id_q=? AND id_type_dd=?''',(data[0], dataType[0]))
+    r3 = c.fetchone()
+    if r3 == None:
+        c.execute('INSERT * FROM EST_DE_TYPE VALUES (?,?,?)',(data[0],dataType[0],0))
+
+    
+    
+
+
+    
+
 
 
 
