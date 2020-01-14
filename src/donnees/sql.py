@@ -174,21 +174,38 @@ def ajouterDonneesTypeddDansBDD():
         ajouterDonneeDansBDD(i,c)
     conn.commit()
 
+def get_lib_text(lib_id):
+    conn = getConnection()
+    c = conn.cursor()
+    for row2 in c.execute('SELECT lib_type_dd FROM TYPE_OF_DD WHERE id_type_dd = (?)', (lib_id,)):
+        lib = row2[0]
+    conn.close()
+    return lib
+
+def get_categ_text(categ_id):
+    conn = getConnection()
+    c = conn.cursor()
+    for row2 in c.execute('SELECT lib_categ FROM CATEGORIE WHERE id_categ = (?)', (categ_id,)):
+        categ = row2[0]
+    conn.close()
+    return categ
+        
+    
+
 def recupererQuestions():
     conn = getConnection()
     c = conn.cursor()
     dt = []
     for row in c.execute('SELECT * FROM QUESTION'):
         
-        for row2 in c.execute('SELECT lib_type_dd FROM TYPE_OF_DD WHERE id_type_dd = (?)', (row[1],)):
-            type_dd = row2[0]
+        type_dd = get_lib_text(row[1])
+        categ = get_categ_text(row[2])
 
-        for row2 in c.execute('SELECT lib_categ FROM CATEGORIE WHERE id_categ = (?)', (row[2],)):
-            categ = row2[0]
-        
-        q = donnees.question(row[0], type_dd,row[1], row[2], row[3], row[4])
+        q = donnees.question(row[0], type_dd, categ, row[3], row[4], row[5])
         q.keyWords = get_kw_q(q.id)
         q.pertinance = row[5]
+        
+        
         if q != None:
             dt.append(q)
     conn.close()
@@ -251,7 +268,7 @@ def get_pertinance_type_dd(q2, typeOfDD):
     if p == None:
         c.execute(''' INSERT INTO PERTINANCE_TYPE VALUES (?, ?, 0) ''', (q2.id, tdd))
         p = 0
-    conn.commit()
+        conn.commit()
     
     return p
 
@@ -267,7 +284,7 @@ def get_pertinance_categorie(q2, categorie):
     if p == None:
         c.execute(''' INSERT INTO PERTINANCE_CATEGORIE VALUES (?, ?, 0) ''', (q2.id, tdd))
         p = 0
-    conn.commit()
+        conn.commit()
     return p
     
 
@@ -284,14 +301,66 @@ def get_pertinance_kw(q, kw):
     c = conn.cursor()
     p = None
     kwid =  get_kw_id(kw)
-    for row in c.execute(''' SELECT  pertinence FROM POESSEDE where id_q = (?) and id_kw = (?)''', (q.id,kwid)):
+    for row in c.execute(''' SELECT  pertinence FROM POSSEDE where id_q = (?) and id_kw = (?)''', (q.id,kwid)):
         p = row[0]
     if p == None:
         c.execute( ''' INSERT INTO POSSEDE VALUES (?,?,0)''', q.id, kwid)
         conn.commit()
     return p
         
+
+def update_pertinance_type_dd(q, type_dd, modif):
+    conn =getConnection()
+    c = conn.cursor()
+    p = None
+    for row in c.execute( ''' SELECT id_type_dd FROM TYPE_OF_DD where lib_type_dd = (?) ''',  (type_dd,)):
+        tdd = row[0]    
+    for row in c.execute( ''' SELECT pertinence from PERTINANCE_TYPE where id_q = (?) and id_type_dd = (?) ''',  (q.id, tdd)):
+        p = row[0]
+    if p == None:
+        c.execute(''' INSERT INTO PERTINANCE_TYPE VALUES (?, ?, 0) ''', (q2.id, tdd))
+        conn.commit()
     
+    c.execute(''' UPDATE  PERTINANCE_TYPE SET pertinence = pertinence + (?) WHERE id_q = (?) AND id_type_dd = (?)''', (modif, q.id, tdd))
+
+
+    
+    
+def update_pertinance_categorie(q2, categorie, modif):
+    conn =getConnection()
+    c = conn.cursor()
+    p = None
+    for row in c.execute( ''' SELECT id_categ FROM CATEGORIE where lib_categ = (?) ''',  (categorie,)):
+        tdd = row[0]    
+    for row in c.execute( ''' SELECT pertinence from PERTINANCE_CATEGORIE where id_q = (?) and id_categ = (?) ''',  (q2.id, tdd)):
+        p = row[0]
+
+    if p == None:
+        c.execute(''' INSERT INTO PERTINANCE_CATEGORIE VALUES (?, ?, 0) ''', (q2.id, tdd))
+        p = 0
+        conn.commit()
+    c.execute(''' UPDATE  PERTINANCE_CATEGORIE SET pertinence = pertinence + (?) WHERE id_q = (?) AND id_categ = (?)''', (modif, q2.id, tdd))
+
+
+def update_pertinance_kw(q, kw, modif):
+    conn =getConnection()
+    c = conn.cursor()
+    p = None
+    kwid =  get_kw_id(kw)
+    for row in c.execute(''' SELECT  pertinence FROM POESSEDE where id_q = (?) and id_kw = (?)''', (q.id,kwid)):
+        p = row[0]
+    if p == None:
+        c.execute( ''' INSERT INTO POSSEDE VALUES (?,?,0)''', q.id, kwid)
+        conn.commit()
+    c.execute(''' UPDATE POESSEDE SET pertinence =  pertinence + (?) WHERE id_q = (?) and id_kw = (?)''', (modif,q.id,kwid))
+    
+    
+def update_pertinance_global(q, modif):
+    conn =getConnection()
+    c = conn.cursor()
+    p = 0
+    c.execute(''' UPDATE QUESTION SET pertinance = pertinance + (?) where id_q = (?) ''', (modif,q.id ))
+
 
 
 def creeAjouter():

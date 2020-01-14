@@ -55,7 +55,7 @@ def get_pertinance(q1,q2):
     per+=sql.get_pertinance_global(q2)
     
     
-    return 
+    return per
 
 def get_liste_pertinance(q1): #retourne une liste de tuple (question, pertinance) dans l'ordre de la plus pertinance a la moins pertinante
     questions = sql.recupererQuestions()
@@ -64,6 +64,7 @@ def get_liste_pertinance(q1): #retourne une liste de tuple (question, pertinance
         if(q1.id != q2.id):
             liste.append((q2, get_pertinance(q1,q2)))
     l2 = sorted(liste, key=itemgetter(1), reverse=True)
+    print(l2)
     return l2
 
 
