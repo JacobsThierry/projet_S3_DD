@@ -40,6 +40,7 @@ def destroy_Toplevel1():
 
 class Toplevel1:
     def buttonAdd(self):
+        CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
         foo = []
         foo = self.newquestion_cb["values"] 
         if(foo!='' and self.question_text.get("1.0",'end-1c') not in foo):

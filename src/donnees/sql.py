@@ -322,7 +322,7 @@ def update_pertinance_type_dd(q, type_dd, modif):
         conn.commit()
     
     c.execute(''' UPDATE  PERTINANCE_TYPE SET pertinence = pertinence + (?) WHERE id_q = (?) AND id_type_dd = (?)''', (modif, q.id, tdd))
-
+    conn.commit()
 
     
     
@@ -340,26 +340,27 @@ def update_pertinance_categorie(q2, categorie, modif):
         p = 0
         conn.commit()
     c.execute(''' UPDATE  PERTINANCE_CATEGORIE SET pertinence = pertinence + (?) WHERE id_q = (?) AND id_categ = (?)''', (modif, q2.id, tdd))
-
+    conn.commit()
 
 def update_pertinance_kw(q, kw, modif):
     conn =getConnection()
     c = conn.cursor()
     p = None
     kwid =  get_kw_id(kw)
-    for row in c.execute(''' SELECT  pertinence FROM POESSEDE where id_q = (?) and id_kw = (?)''', (q.id,kwid)):
+    for row in c.execute(''' SELECT  pertinence FROM POSSEDE where id_q = (?) and id_kw = (?)''', (q.id,kwid)):
         p = row[0]
     if p == None:
         c.execute( ''' INSERT INTO POSSEDE VALUES (?,?,0)''', q.id, kwid)
         conn.commit()
-    c.execute(''' UPDATE POESSEDE SET pertinence =  pertinence + (?) WHERE id_q = (?) and id_kw = (?)''', (modif,q.id,kwid))
-    
+    c.execute(''' UPDATE POSSEDE SET pertinence =  pertinence + (?) WHERE id_q = (?) and id_kw = (?)''', (modif,q.id,kwid))
+    conn.commit()
     
 def update_pertinance_global(q, modif):
     conn =getConnection()
     c = conn.cursor()
     p = 0
-    c.execute(''' UPDATE QUESTION SET pertinance = pertinance + (?) where id_q = (?) ''', (modif,q.id ))
+    c.execute(''' UPDATE QUESTION SET pertinance = pertinance + (?) where id = (?) ''', (modif,q.id ))
+    conn.commit()
 
 
 
