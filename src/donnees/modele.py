@@ -45,12 +45,13 @@ def pertinance_base(q1, q2):
 def get_pertinance(q1,q2):
     
     per = pertinance_base(q1,q2)
+    
 
     for kw in q1.keyWords:
         if kw in q2.keyWords:
-            per += sql.get_pertinance_kw(q2)
+            per += sql.get_pertinance_kw(q2, kw)
     per+= sql.get_pertinance_type_dd(q2, q1.typeOfDD)
-    per+=sql.get_pertinance_categorie(q2, q1.categorie, reduction_type_dd)
+    per+=sql.get_pertinance_categorie(q2, q1.categorie)
     per+=sql.get_pertinance_global(q2)
     
     

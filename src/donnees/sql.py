@@ -107,7 +107,6 @@ def ajouterDonneeDansBDD(donnee, c):
     data = [donnee.id,id_type_dd,id_categ , donnee.shortName,
             donnee.text, donnee.typeOfAnswer, donnee.pertinance]
 
-    
     c.execute('INSERT INTO QUESTION VALUES (?,?,?,?,?,?,?)', data)
 
     for kw in donnee.keyWords:
@@ -237,7 +236,62 @@ def recupererTypeofdd(dd_id):
     c = conn.cursor()
     for row in c.execute('SELECT * FROM TYPE_OF_DD WHERE TYPE_OF_DD.id_type_dd = (?)', (dd_id)):
         td = donnees.typeofdd(row[0], row[1])
-    return td 
+    return td
+
+
+def get_pertinance_type_dd(q2, typeOfDD):
+    conn =getConnection()
+    c = conn.cursor()
+    p = None
+    for row in c.execute( ''' SELECT id_type_dd FROM TYPE_OF_DD where lib_type_dd = (?) ''',  (typeOfDD,)):
+        tdd = row[0]    
+    for row in c.execute( ''' SELECT pertinence from PERTINANCE_TYPE where id_q = (?) and id_type_dd = (?) ''',  (q2.id, tdd)):
+        p = row[0]
+
+    if p == None:
+        c.execute(''' INSERT INTO PERTINANCE_TYPE VALUES (?, ?, 0) ''', (q2.id, tdd))
+        p = 0
+    conn.commit()
+    
+    return p
+
+def get_pertinance_categorie(q2, categorie):
+    conn =getConnection()
+    c = conn.cursor()
+    p = None
+    for row in c.execute( ''' SELECT id_categ FROM CATEGORIE where lib_categ = (?) ''',  (categorie,)):
+        tdd = row[0]    
+    for row in c.execute( ''' SELECT pertinence from PERTINANCE_CATEGORIE where id_q = (?) and id_categ = (?) ''',  (q2.id, tdd)):
+        p = row[0]
+
+    if p == None:
+        c.execute(''' INSERT INTO PERTINANCE_CATEGORIE VALUES (?, ?, 0) ''', (q2.id, tdd))
+        p = 0
+    conn.commit()
+    return p
+    
+
+def get_pertinance_global(q2):
+    conn =getConnection()
+    c = conn.cursor()
+    p = 0
+    for row in c.execute(''' SELECT pertinance FROM QUESTION where id = (?) ''', (q2.id,)):
+        p = row[0]
+    return p
+
+def get_pertinance_kw(q, kw):
+    conn =getConnection()
+    c = conn.cursor()
+    p = None
+    kwid =  get_kw_id(kw)
+    for row in c.execute(''' SELECT  pertinence FROM POESSEDE where id_q = (?) and id_kw = (?)''', (q.id,kwid)):
+        p = row[0]
+    if p == None:
+        c.execute( ''' INSERT INTO POSSEDE VALUES (?,?,0)''', q.id, kwid)
+        conn.commit()
+    return p
+        
+    
 
 
 def creeAjouter():
@@ -245,4 +299,5 @@ def creeAjouter():
     ajouterDonneesDansBDD()
     ajouterDonneesCategDansBDD()
     ajouterDonneesTypeddDansBDD()
+
 

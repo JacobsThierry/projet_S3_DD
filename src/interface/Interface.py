@@ -20,6 +20,7 @@ def vp_start_gui():
     interface_support.set_Tk_var()
     top = Toplevel1 (root)
     interface_support.init(root, top)
+    root.attributes("-fullscreen", True)
     root.mainloop()
 
 w = None
