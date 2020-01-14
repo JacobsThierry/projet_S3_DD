@@ -148,6 +148,26 @@ def recupererQuestions():
             dt.append(q)
     return dt
 
+def recupererCategories():
+    conn = getConnection()
+    c = conn.cursor()
+    dt = []
+    for row in c.execute('SELECT * FROM CATEGORIE'):
+        ca = donnees.categorie(row[0], row[1])
+        if ca != None:
+            dt.append(ca)
+    return dt
+
+def recupererTypeofdds():
+    conn = getConnection()
+    c = conn.cursor()
+    dt = []
+    for row in c.execute('SELECT * FROM TYPE_OF_DD'):
+        td = donnees.typeofdd(row[0], row[1])
+        if td != None:
+            dt.append(td)
+    return dt
+
 def recupererQuestion(q_id):
     conn = getConnection()
     c = conn.cursor()
@@ -157,6 +177,20 @@ def recupererQuestion(q_id):
         q.keyWords = get_kw_q(q.id)
         q.pertinance = row[5]
     return q
+
+def recupererCategorie(categ_id):
+    conn = getConnection()
+    c = conn.cursor()
+    for row in c.execute('SELECT * FROM CATEGORIE WHERE CATEGORIE.id_categ = (?)', (categ_id)):
+        ca = donnees.categorie(row[0], row[1])
+    return ca    
+
+def recupererTypeofdd(dd_id):
+    conn = getConnection()
+    c = conn.cursor()
+    for row in c.execute('SELECT * FROM TYPE_OF_DD WHERE TYPE_OF_DD.id_type_dd = (?)', (dd_id)):
+        td = donnees.typeofdd(row[0], row[1])
+    return td 
 
 
 def creeAjouter():

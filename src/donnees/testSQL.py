@@ -17,7 +17,14 @@ def testBDD(): ##Détruit et recrée la base de donnée local
 def test_recupererQuestions():
     print(sql.recupererQuestions())
 
+def test_recupererCategories():
+	print(sql.test_recupererCategories())
+
+def test_recupererTypeofdds():
+	print(sql.test_recupererTypeofdds())
+
 testBDD()
 #test_kw()
 print(test_recupererQuestions())
-
+print(test_recupererCategories())
+print(test_recupererTypeofdds())
