@@ -1,6 +1,9 @@
 import donnees
 import sqlite3
 
+import donneesCateg
+import donneesTypedd
+
 
 def getConnection():
     conn = sqlite3.connect('../../datas/bdd.db')
@@ -78,8 +81,8 @@ def get_kw_q(question):
 def ajouterDonneeDansBDD(donnee, c):
     data = [donnee.id, donnee.shortName,
             donnee.text, donnee.typeOfAnswer, donnee.pertinance]
-    dataCateg = [donnee.id_categ, donnee.lib_categ]
-    dataType = [donnee.id_type_dd, donnee.lib_type_dd]
+    dataCateg = [donnee.lib_categ]
+    dataType = [donnee.lib_type_dd]
     c.execute('INSERT INTO QUESTION VALUES (?,?,?,?,?)', data)
     c.execute('INSERT INTO CATEGORIE VALUES (?,?)',dataCateg)
     c.execute('INSERT INTO TYPE_OF_DD VALUES (?,?)',dataType)

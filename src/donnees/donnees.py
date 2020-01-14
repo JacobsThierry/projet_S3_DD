@@ -43,33 +43,7 @@ class question:
         print("\t", type(self.typeOfAnswer))
         print("\t", type(self.keyWords))
 
-class categorie:
-    def __init__(self, lib):
-        #self.id_categ = idc
-        self.lib_categ = lib
 
-
-    def printData(self):
-        #print(self.id_categ)
-        print("\t", self.lib_categ)
-
-    def printType(self):
-        #print(self.id_categ)
-        print("\t", type(self.lib_categ))
-
-class typeofdd:
-    def __init__(self, libdd):
-        
-        self.lib_type_dd = libdd
-
-
-    def printData(self):
-       
-        print("\t", self.lib_type_dd)
-
-    def printType(self):
-        
-        print("\t", type(self.lib_type_dd))
 
 def importData(emplacement):
     tree = ET.parse(emplacement)
@@ -85,23 +59,6 @@ def getData():
             dt.append(laq)
     return dt
 
-def getDataCateg():
-    donnee = importData("../../datas/Questions_IUT_121219.xml")
-    dt = []
-    for t in donnee:
-        for child in t:
-            categ = categorie(get_categ(child))
-            dt.append(categ)
-    return dt
-
-def getDataType():
-    donnee = importData("../../datas/Questions_IUT_121219.xml")
-    dt = []
-    for t in donnee:
-        for child in t:
-            typedd = typeofdd(get_type(child))
-            dt.append(typedd)
-    return dt
 
 
 def printdata(donnee):
@@ -110,17 +67,7 @@ def printdata(donnee):
             data = question(get_id(child), get_type(child), get_categ(child), get_sn(child), get_text(child), get_typpe_of_answ(child))
             print(data)
 
-def printdataCateg(donnee):
-    for t in donnee:
-        for child in t:
-            data = categorie(get_categ(child))
-            print(data)
 
-def printdataType(donnee):
-    for t in donnee:
-        for child in t:
-            data = typeofdd(get_type(child))
-            print(data)
 
 
 def get_id(donnee):
@@ -168,5 +115,4 @@ def testData():
     donnee = importData("../../datas/Questions_IUT_121219.xml")
     #print(question_plus_proche(donnee, donnee[0][0]).tag)
     printdata(donnee)
-    printdataCateg(donnee)
-    printdataType(donnee)
+
