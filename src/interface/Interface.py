@@ -44,10 +44,10 @@ class Toplevel1:
         foo = self.newquestion_cb["values"] 
         if(foo!='' and self.question_text.get("1.0",'end-1c') not in foo):
             for k in foo:
-                laq=donnees.findQ(self.newquestion_cb.get())
+                laq=donnees.findQ(k)
                 modele.update_pertinance_rejete(CQ,laq)
                 print("b")
-        
+        print("a")
         self.question_list.insert(0,self.question_text.get("1.0",'end-1c'))
         self.id_entry['state']='normal'
         self.id_entry.delete(0, 'end')
@@ -98,7 +98,8 @@ class Toplevel1:
         foo = self.newquestion_cb["values"] 
         CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
         for k in foo:
-            laq=donnees.findQ(self.newquestion_cb.get())
+            laq=donnees.findQ(k)
+            print(laq.text)
             if k == self.newquestion_cb.get():
                 modele.update_pertinance_choisi(CQ,laq)
                 print("a")
