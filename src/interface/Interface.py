@@ -54,11 +54,11 @@ class Toplevel1:
         self.anwser_cb.current(0)
         self.tdd_cb.current(0)
         self.tq_cb.current(0)
-        
+
     def onselect(self,event):
         print("e")
         self.use_btn['state']='active'
-        
+
     def buttonUse(self):
         laq=donnees.findQ(self.waiting_list.get(self.waiting_list.curselection()))
         self.question_text.insert("1.0",laq.text)
@@ -93,8 +93,11 @@ class Toplevel1:
         self.tdd_cb.set(laq.typeOfDD)
         self.tq_cb.set(laq.categorie)
         self.anwser_cb.set(laq.typeOfAnswer)
+        foo = []
+        self.newquestion_cb["values"] = foo
         self.newquestion_cb.set('')
-        
+        self.replace_btn['state']= DISABLED
+        self.next_btn['state']= DISABLED
 
     def buttonAddAsNext(self):
         self.waiting_list.insert(0,self.newquestion_cb.get())
@@ -104,26 +107,31 @@ class Toplevel1:
         self.id_entry['state']=DISABLED
         self.sn_entry.delete(0, 'end')
         self.question_text.delete("1.0",'end-1c')
+        foo = []
+        self.newquestion_cb["values"] = foo
         self.newquestion_cb.set('')
+        self.replace_btn['state']= DISABLED
+        self.next_btn['state']= DISABLED
 
 
     def callback(self,event):
+
         if (self.sn_entry.get()!='' and self.question_text.get("1.0",'end-1c')!=''  ):
             self.add_btn['state']='active'
             self.find_btn['state']='active'
         else:
             self.add_btn['state']=DISABLED
             self.find_btn['state']=DISABLED
-        """ A fix
+
+
         if (len(self.newquestion_cb.get()) != 0):
             self.replace_btn['state']= 'active'
-        else:
-            self.replace_btn['state']= DISABLED
-        if (len(self.newquestion_cb.get()) != 0):
             self.next_btn['state']= 'active'
         else:
+            self.replace_btn['state']= DISABLED
             self.next_btn['state']= DISABLED
-        """
+
+
 
 
     def __init__(self, top=None):
@@ -259,7 +267,7 @@ class Toplevel1:
                 , relwidth=0.601)
         self.newquestion_cb.configure(textvariable=interface_support.combobox2)
         self.newquestion_cb.configure(takefocus="")
-
+        self.newquestion_cb.bind("<<ComboboxSelected>>",self.callback)
         self.Label5 = tk.Label(self.Labelframe1)
         self.Label5.place(relx=0.655, rely=0.148, height=21, width=94
                 , bordermode='ignore')
@@ -349,7 +357,7 @@ class Toplevel1:
         self.replace_btn.configure(highlightcolor="black")
         self.replace_btn.configure(pady="0")
         self.replace_btn.configure(text='''Replace current''')
-        #self.replace_btn['state'] = DISABLED
+        self.replace_btn['state'] = DISABLED
 
         self.next_btn = tk.Button(top,command=self.buttonAddAsNext)
         self.next_btn.place(relx=0.459, rely=0.799, height=24, width=90)
@@ -362,7 +370,7 @@ class Toplevel1:
         self.next_btn.configure(highlightcolor="black")
         self.next_btn.configure(pady="0")
         self.next_btn.configure(text='''Add as next''')
-        #self.next_btn['state'] = DISABLED
+        self.next_btn['state'] = DISABLED
 
         self.nosuggest_btn = tk.Button(top)
         self.nosuggest_btn.place(relx=0.610, rely=0.799, height=24, width=123)
@@ -375,7 +383,7 @@ class Toplevel1:
         self.nosuggest_btn.configure(highlightcolor="black")
         self.nosuggest_btn.configure(pady="0")
         self.nosuggest_btn.configure(text='''Do not suggest again''')
-        
+
         self.use_btn = tk.Button(top,command=self.buttonUse)
         self.use_btn.place(relx=0.120, rely=0.700, height=24, width=90)
         self.use_btn.configure(activebackground="#ececec")
@@ -386,7 +394,7 @@ class Toplevel1:
         self.use_btn.configure(highlightbackground="#d9d9d9")
         self.use_btn.configure(highlightcolor="black")
         self.use_btn.configure(pady="0")
-        self.use_btn.configure(text='''Add as next''')
+        self.use_btn.configure(text='''Use''')
         self.use_btn['state']=DISABLED
 
 
