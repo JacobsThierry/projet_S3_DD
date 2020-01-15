@@ -49,15 +49,14 @@ def pertinance_base(q1, q2): #vaut au minimum -4 - card(kw) - card(kw_sn) * 2, a
     return base
 
 def get_pertinance(q1,q2):
-    max_q1 = pertinance_base(q1,q1) + max_pertinance
-    
+       
     per = pertinance_base(q1,q2)
 
     if q2.apparu == 0:
         ratio = 0
     else:
         ratio = q2.choisi/q2.apparu
-    
+    print(ratio)
     per+= max_pertinance * ratio
     
     
@@ -104,10 +103,14 @@ def update_pertinance_waiting_list(ques_proposer):
     sql.update_pertinance_global(ques_proposer, reduction_global)
 
 def calculer_pourcentage(q_proposer,q_saisi):
-    v2 = pertinance_base(q_saisi,q_saisi) + max_pertinance
     
+    v2 = pertinance_base(q_saisi,q_saisi) + max_pertinance
     v1=get_pertinance(q_saisi, q_proposer)
 
+    print()
+    print(v1)
+    print(v2)
+    print()
     
     vp=(v1/v2)*100 
 
