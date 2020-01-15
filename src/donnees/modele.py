@@ -64,18 +64,40 @@ def get_pertinance(q1,q2):
     
     return per
 
-def get_pertinance_max(q1):#comparer la question saisi avec lui même pour trouver la pertinence MAX
+#def get_pertinance_max(q1):#comparer la question saisi avec lui même pour trouver la pertinence MAX
 
-    per = pertinance_base(q1,q1)
+    #per = pertinance_base(q1,q1)
 
+    #for kw in q1.keyWords:
+       # if kw in q1.keyWords:
+       #     per += sql.get_pertinance_kw(q1,kw)
+   # per+=sql.get_pertinance_type_dd(q1,q1.typeOfDD)
+    #per+=sql.get_pertinance_categorie(q1,q1.categorie)
+    #per+=sql.get_pertinance_global(q1)
+
+   # return per
+
+def get_pertinance_max(q1):
+    base = 0
     for kw in q1.keyWords:
         if kw in q1.keyWords:
-            per += sql.get_pertinance_kw(q1,kw)
-    per+=sql.get_pertinance_type_dd(q1,q1.typeOfDD)
-    per+=sql.get_pertinance_categorie(q1,q1.categorie)
-    per+=sql.get_pertinance_global(q1)
+            base+=2
+        else:
+            base-=2
+    for kw in q1.keyWords:
+        if kw not in q1.keyWords:
+            base-=1
+    for kw in bagOfWord.filtreMotsClefs(q1.shortName):
+        if kw in q1.keyWords:
+            base+=5
+        else:
+            base-=2
+        
+    
+    base -= distance_type_DD(q1.typeOfDD, q1.typeOfDD)
+    base -= distance_categ_DD(q1.categorie, q1.categorie)
 
-    return per
+    return base
 
 def get_liste_pertinance(q1): #retourne une liste de tuple (question, pertinance) dans l'ordre de la plus pertinance a la moins pertinante
     questions = sql.recupererQuestions()
