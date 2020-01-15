@@ -46,13 +46,9 @@ class Toplevel1:
             for k in foo:
                 laq=donnees.findQ(k)
                 modele.update_pertinance_rejete(CQ,laq)
-<<<<<<< HEAD
+
                 print("rejete :" + laq.text)
-        
-=======
-                print("b")
-        print("a")
->>>>>>> b38f68c5556fd2a43f7f021793c9adefcecb2c67
+
         self.question_list.insert(0,self.question_text.get("1.0",'end-1c'))
         self.id_entry['state']='normal'
         self.id_entry.delete(0, 'end')
@@ -104,10 +100,6 @@ class Toplevel1:
         CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
         for k in foo:
             laq=donnees.findQ(k)
-<<<<<<< HEAD
-=======
-            print(laq.text)
->>>>>>> b38f68c5556fd2a43f7f021793c9adefcecb2c67
             if k == self.newquestion_cb.get():
                 modele.update_pertinance_choisi(CQ,laq)
                 print("choisi :" + laq.text)
