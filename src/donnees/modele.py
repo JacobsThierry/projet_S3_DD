@@ -140,7 +140,7 @@ def calculer_pourcentage(q_proposer,q_saisi)
 
     vp=(v1/v2)*100 
 
-    
+    return vp
 
 
 
