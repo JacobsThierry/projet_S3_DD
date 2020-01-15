@@ -308,7 +308,7 @@ def get_pertinance_kw(q, kw):
     for row in c.execute(''' SELECT  pertinence FROM POSSEDE where id_q = (?) and id_kw = (?)''', (q.id,kwid)):
         p = row[0]
     if p == None:
-        c.execute( ''' INSERT INTO POSSEDE VALUES (?,?,0)''', q.id, kwid)
+        c.execute( ''' INSERT INTO POSSEDE VALUES (?,?,0)''', (q.id, kwid))
         conn.commit()
     return p
         
@@ -322,7 +322,7 @@ def update_pertinance_type_dd(q, type_dd, modif):
     for row in c.execute( ''' SELECT pertinence from PERTINANCE_TYPE where id_q = (?) and id_type_dd = (?) ''',  (q.id, tdd)):
         p = row[0]
     if p == None:
-        c.execute(''' INSERT INTO PERTINANCE_TYPE VALUES (?, ?, 0) ''', (q2.id, tdd))
+        c.execute(''' INSERT INTO PERTINANCE_TYPE VALUES (?, ?, 0) ''', (q.id, tdd))
         conn.commit()
     
     c.execute(''' UPDATE  PERTINANCE_TYPE SET pertinence = pertinence + (?) WHERE id_q = (?) AND id_type_dd = (?)''', (modif, q.id, tdd))
