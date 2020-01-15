@@ -41,7 +41,7 @@ class Toplevel1:
     def buttonAdd(self):
         CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
         foo = []
-        foo = self.newquestion_cb["values"] 
+        foo = self.newquestion_cb["values"]
         if(foo!='' and self.question_text.get("1.0",'end-1c') not in foo):
             for k in foo:
                 laq=donnees.findQ(k)
@@ -71,8 +71,42 @@ class Toplevel1:
         self.next_btn['state']= DISABLED
 
     def onselect(self,event):
-        print("e")
-        self.use_btn['state']='active'
+        self.use_btn['state'] = 'active'
+
+    def onselect_bis(self,event):
+        self.edit_btn['state'] = 'active'
+        self.down_btn['state'] = 'active'
+        self.up_btn['state'] = 'active'
+
+    def buttonUp(self):
+        liste_tmp = self.question_list
+        posList = liste_tmp.curselection()
+
+        if not posList:
+            return
+
+        for pos in posList:
+            if pos == 0:
+                continue
+
+            text = liste_tmp.get(pos)
+            liste_tmp.delete(pos)
+            liste_tmp.insert(pos-1, text)
+
+    def buttonDown(self):
+        liste_tmp = self.question_list
+        posList = liste_tmp.curselection()
+
+        if not posList:
+            return
+
+        for pos in posList:
+            if pos == 'end':
+                continue
+
+            text = liste_tmp.get(pos)
+            liste_tmp.delete(pos)
+            liste_tmp.insert(pos+1, text)
 
     def buttonUse(self):
         laq=donnees.findQ(self.waiting_list.get(self.waiting_list.curselection()))
@@ -85,18 +119,26 @@ class Toplevel1:
         self.waiting_list.delete(self.waiting_list.curselection())
         self.use_btn['state']=DISABLED
 
-
+    # A fix : Si meme Q entre combo et list alors trou dans le combo ->  foo[k] = ''
     def buttonFind(self):
+        cpt = 0
         CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
         LP=modele.get_liste_pertinance(CQ)
         foo = []
-        for k in range(4):
+        for k in range(10):
             foo.append(LP[k][0].text)
-        self.newquestion_cb["values"] = foo
+            for j in range(self.question_list.size()):
+                if(self.question_list.get(j) == foo[k]):
+                    foo[k] = ''
+            cpt = cpt+1
+            if(cpt == 4):
+                self.newquestion_cb["values"] = foo
+                break
+
 
     def buttonReplace(self):
         foo = []
-        foo = self.newquestion_cb["values"] 
+        foo = self.newquestion_cb["values"]
         CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
         for k in foo:
             laq=donnees.findQ(k)
@@ -124,9 +166,23 @@ class Toplevel1:
         self.replace_btn['state']= DISABLED
         self.next_btn['state']= DISABLED
 
+    def buttonEdit(self):
+        laq=donnees.findQ(self.question_list.get(self.question_list.curselection()))
+        self.question_text.insert("1.0",laq.text)
+        self.sn_entry.insert(0, laq.shortName)
+        self.tdd_cb.set(laq.typeOfDD)
+        self.tq_cb.set(laq.categorie)
+        self.anwser_cb.set(laq.typeOfAnswer)
+        self.newquestion_cb.set('')
+        self.question_list.delete(self.question_list.curselection())
+        self.edit_btn['state']= DISABLED
+        self.add_btn['state']='active'
+        self.find_btn['state']='active'
+
+
     def buttonAddAsNext(self):
         foo = []
-        foo = self.newquestion_cb["values"] 
+        foo = self.newquestion_cb["values"]
         CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
         for k in foo:
             laq=donnees.findQ(self.newquestion_cb.get())
@@ -162,9 +218,6 @@ class Toplevel1:
         else:
             self.replace_btn['state']= DISABLED
             self.next_btn['state']= DISABLED
-
-
-
 
     def __init__(self, top=None):
         _bgcolor = '#d9d9d9'
@@ -369,6 +422,7 @@ class Toplevel1:
         self.question_list.configure(disabledforeground="#a3a3a3")
         self.question_list.configure(font="TkFixedFont")
         self.question_list.configure(foreground="#000000")
+        self.question_list.bind('<<ListboxSelect>>', self.onselect_bis)
 
         self.Label8 = tk.Label(top)
         self.Label8.place(relx=0.825, rely=0.102, height=21, width=114)
@@ -428,6 +482,45 @@ class Toplevel1:
         self.use_btn.configure(pady="0")
         self.use_btn.configure(text='''Use''')
         self.use_btn['state']=DISABLED
+
+        self.edit_btn = tk.Button(top,command=self.buttonEdit)
+        self.edit_btn.place(relx=0.710, rely=0.700, height=24, width=123)
+        self.edit_btn.configure(activebackground="#ececec")
+        self.edit_btn.configure(activeforeground="#000000")
+        self.edit_btn.configure(background="#d9d9d9")
+        self.edit_btn.configure(disabledforeground="#a3a3a3")
+        self.edit_btn.configure(foreground="#000000")
+        self.edit_btn.configure(highlightbackground="#d9d9d9")
+        self.edit_btn.configure(highlightcolor="black")
+        self.edit_btn.configure(pady="0")
+        self.edit_btn.configure(text='''edit''')
+        self.edit_btn['state']= DISABLED
+
+        self.up_btn = tk.Button(top,command=self.buttonUp)
+        self.up_btn.place(relx=0.810, rely=0.700, height=24, width=123)
+        self.up_btn.configure(activebackground="#ececec")
+        self.up_btn.configure(activeforeground="#000000")
+        self.up_btn.configure(background="#d9d9d9")
+        self.up_btn.configure(disabledforeground="#a3a3a3")
+        self.up_btn.configure(foreground="#000000")
+        self.up_btn.configure(highlightbackground="#d9d9d9")
+        self.up_btn.configure(highlightcolor="black")
+        self.up_btn.configure(pady="0")
+        self.up_btn.configure(text='''up''')
+        self.up_btn['state']= DISABLED
+
+        self.down_btn = tk.Button(top,command=self.buttonDown)
+        self.down_btn.place(relx=0.910, rely=0.700, height=24, width=123)
+        self.down_btn.configure(activebackground="#ececec")
+        self.down_btn.configure(activeforeground="#000000")
+        self.down_btn.configure(background="#d9d9d9")
+        self.down_btn.configure(disabledforeground="#a3a3a3")
+        self.down_btn.configure(foreground="#000000")
+        self.down_btn.configure(highlightbackground="#d9d9d9")
+        self.down_btn.configure(highlightcolor="black")
+        self.down_btn.configure(pady="0")
+        self.down_btn.configure(text='''down''')
+        self.down_btn['state']= DISABLED
 
 
 if __name__ == '__main__':
