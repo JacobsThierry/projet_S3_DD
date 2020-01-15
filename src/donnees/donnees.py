@@ -4,14 +4,15 @@ import nltk
 
 
 class question:
-    def __init__(self, idd,typee,categ,sn,t,toa, kw = None, pertinanc = 0): ##crée une question a partire d'une ligne de donnée
+    def __init__(self, idd,typee,categ,sn,t,toa, kw = None, apparu = 0, choisi = 0): ##crée une question a partire d'une ligne de donnée
         self.id = idd
         self.typeOfDD = typee
         self.categorie = categ
         self.shortName = sn
         self.text = t
         self.typeOfAnswer = toa
-        self.pertinance = pertinanc
+        self.apparu = apparu
+        self.choisi = choisi
         if(kw == None):
             self.keyWords = bagOfWord.filtreMotsClefs(self.text)
         else:
@@ -22,7 +23,7 @@ class question:
         for i in self.keyWords:
             kwl += i + "; "
         return ("id = " + self.id + " type = " + self.typeOfDD + " categorie = " + self.categorie + " short name = " + self.shortName +
-                " text = " + self.text + " type of answer = " + self.typeOfAnswer + " key words : " + kwl + "pertinance : " + str(self.pertinance) +"\n"
+                " text = " + self.text + " type of answer = " + self.typeOfAnswer + " key words : " + kwl + "apparu : " + str(self.apparu) + " choisi : " + str(self.choisi) + "\n"
                 )
 
     def printData(self):
