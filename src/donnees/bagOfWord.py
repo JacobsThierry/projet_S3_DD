@@ -1,10 +1,12 @@
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
+from nltk.stem import WordNetLemmatizer
 import csv
 from sklearn.feature_extraction.text import CountVectorizer
 
 
 def filtreMotsClefs(sent):
+    lemmatizer = WordNetLemmatizer()
     porter = PorterStemmer()
     words = word_tokenize(sent)
     filtre = []
@@ -13,9 +15,14 @@ def filtreMotsClefs(sent):
          for row in reader:
              for field in row:
                  for w in words:
+                     w1=w
                      w = porter.stem(w.lower())
-                     if porter.stem(field.lower()) == w.lower():
+                     w1 = lemmatizer.lemmatize(w1.lower())
+                     if lemmatizer.lemmatize(field.lower()) == w1.lower():
+                        filtre.append(w1)
+                     elif porter.stem(field.lower()) == w.lower():
                         filtre.append(w)
+                     
 
     return filtre
 
@@ -24,3 +31,5 @@ def testBOW():
     print(filtreMotsClefs(ch))
 
 testBOW()
+
+

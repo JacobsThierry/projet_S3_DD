@@ -54,14 +54,7 @@ def get_pertinance(q1,q2):
     per = pertinance_base(q1,q2)
     
 
-    for kw in q1.keyWords:
-        if kw in q2.keyWords:
-            per += sql.get_pertinance_kw(q2, kw)
-    per+= sql.get_pertinance_type_dd(q2, q1.typeOfDD)
-    per+=sql.get_pertinance_categorie(q2, q1.categorie)
-    per+=sql.get_pertinance_global(q2)
-    
-    
+ 
     return per
 
 #def get_pertinance_max(q1):#comparer la question saisi avec lui même pour trouver la pertinence MAX
@@ -156,8 +149,8 @@ def update_pertinance_waiting_list(ques_proposer):
     reduction_global = 5
     sql.update_pertinance_global(ques_proposer, reduction_global)
 
-def calculer_pourcentage(q_proposer,q_saisi)
-    v1=sql.get_pertinance_global(q_proposer)
+def calculer_pourcentage(q_proposer,q_saisi):
+    v1=pertinance_base(q_proposer,q_saisi)
     v2=get_pertinance_max(q_saisi)
 
     vp=(v1/v2)*100 

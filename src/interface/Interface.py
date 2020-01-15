@@ -121,27 +121,21 @@ class Toplevel1:
 
     # A fix : Si meme Q entre combo et list alors trou dans le combo ->  foo[k] = ''
     def buttonFind(self):
-        cpt = 0
         CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
         LP=modele.get_liste_pertinance(CQ)
         foo = []
-        for k in range(10):
-            foo.append(LP[k][0].text)
-            for j in range(self.question_list.size()):
-                if(self.question_list.get(j) == foo[k]):
-                    foo[k] = ''
-            cpt = cpt+1
-            if(cpt == 4):
-                self.newquestion_cb["values"] = foo
-                break
-
+        for k in range(4):
+            Pourcentage = round(modele.calculer_pourcentage(LP[k][0],CQ))
+            foo.append(str(Pourcentage)+" %"+LP[k][0].text)
+        self.newquestion_cb["values"] = foo
 
     def buttonReplace(self):
         foo = []
         foo = self.newquestion_cb["values"]
         CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
         for k in foo:
-            laq=donnees.findQ(k)
+            Q=k.split("%");
+            laq=donnees.findQ(Q[1])
             if k == self.newquestion_cb.get():
                 modele.update_pertinance_choisi(CQ,laq)
                 print("choisi :" + laq.text)
@@ -154,8 +148,10 @@ class Toplevel1:
         self.id_entry['state']=DISABLED
         self.sn_entry.delete(0, 'end')
         self.question_text.delete("1.0",'end-1c')
-        self.question_text.insert("1.0",self.newquestion_cb.get())
-        laq=donnees.findQ(self.newquestion_cb.get())
+        Qu=self.newquestion_cb.get()
+        Qu=Qu.split("%")
+        laq=donnees.findQ(Qu[1])
+        self.question_text.insert("1.0",laq.text)
         self.sn_entry.insert(0, laq.shortName)
         self.tdd_cb.set(laq.typeOfDD)
         self.tq_cb.set(laq.categorie)
@@ -185,10 +181,14 @@ class Toplevel1:
         foo = self.newquestion_cb["values"]
         CQ=donnees.question(self.id_entry.get(),self.tdd_cb.get(),self.tq_cb.get(),self.sn_entry.get(),self.question_text.get("1.0",'end-1c'),self.anwser_cb.get(),None,0)
         for k in foo:
-            laq=donnees.findQ(self.newquestion_cb.get())
+            Q=k.split("%");
+            laq=donnees.findQ(Q[1])
             if k == self.newquestion_cb.get():
                 modele.update_pertinance_waiting_list(laq)
-        self.waiting_list.insert(0,self.newquestion_cb.get())
+        Qu=self.newquestion_cb.get()
+        Qu=Qu.split("%")
+        self.waiting_list.insert(0,Qu[1])
+
         self.id_entry['state']='normal'
         self.id_entry.delete(0, 'end')
         self.id_entry.insert(0,cmp+1)
