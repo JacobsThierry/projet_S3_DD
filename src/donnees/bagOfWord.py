@@ -1,11 +1,11 @@
 from nltk.tokenize import word_tokenize
-from nltk.stem import WordNetLemmatizer
+from nltk.stem import PorterStemmer
 import csv
 from sklearn.feature_extraction.text import CountVectorizer
 
 
 def filtreMotsClefs(sent):
-    lemmatizer = WordNetLemmatizer()
+    porter = PorterStemmer()
     words = word_tokenize(sent)
     filtre = []
     with open('../../datas/BOW.csv', 'rt') as f:
@@ -13,8 +13,8 @@ def filtreMotsClefs(sent):
          for row in reader:
              for field in row:
                  for w in words:
-                     w = lemmatizer.lemmatize(w.lower())
-                     if field.lower() == w.lower():
+                     w = porter.stem(w.lower())
+                     if porter.stem(field.lower()) == w.lower():
                         filtre.append(w)
 
     return filtre
