@@ -1,5 +1,6 @@
 import donnees
 import sql
+import bagOfWord
 from operator import itemgetter
 
 
@@ -36,6 +37,12 @@ def pertinance_base(q1, q2):
     for kw in q2.keyWords:
         if kw not in q1.keyWords:
             base-=1
+    for kw in bagOfWord.filtreMotsClefs(q1.shortName):
+        if kw in q2.keyWords:
+            base+=5
+        else:
+            base-=2
+        
     
     base -= distance_type_DD(q1.typeOfDD, q2.typeOfDD)
     base -= distance_categ_DD(q1.categorie, q2.categorie)
@@ -70,12 +77,20 @@ def get_liste_pertinance(q1): #retourne une liste de tuple (question, pertinance
 
 def update_pertinance_rejete(ques_source, ques_proposer):
     reduction_kw = -1
+    reduction_kw_sn = -2
     reduction_type_dd = -1
     reduction_categorie = -1
     reduction_global = -1
-    for kw in ques_source.keyWords:
+    if(len(ques_source.keyWords)>0):
+        for kw in ques_source.keyWords:
+            if kw in ques_proposer.keyWords:
+                sql.update_pertinance_kw(ques_proposer, kw, reduction_kw)
+    kw_sn = bagOfWord.filtreMotsClefs(ques_source.shortName)
+    for kw in kw_sn:
         if kw in ques_proposer.keyWords:
-            sql.update_pertinance_kw(ques_proposer, kw, reduction_kw)
+            sql.update_pertinance_kw(ques_proposer, kw, reduction_kw_sn)
+        
+    
     sql.update_pertinance_type_dd(ques_proposer, ques_source.typeOfDD, reduction_type_dd)
     sql.update_pertinance_categorie(ques_proposer, ques_source.categorie, reduction_type_dd)
     sql.update_pertinance_global(ques_proposer, reduction_global)
@@ -83,6 +98,7 @@ def update_pertinance_rejete(ques_source, ques_proposer):
 
 def update_pertinance_choisi(ques_source, ques_proposer):
     reduction_kw = 5
+    reduction_kw_sn = 10
     reduction_type_dd = 5
     reduction_categorie = 5
     reduction_global = 5
@@ -90,6 +106,12 @@ def update_pertinance_choisi(ques_source, ques_proposer):
         for kw in ques_source.keyWords:
             if kw in ques_proposer.keyWords:
                 sql.update_pertinance_kw(ques_proposer, kw, reduction_kw)
+    kw_sn = bagOfWord.filtreMotsClefs(ques_source.shortName)
+    for kw in kw_sn:
+        if kw in ques_proposer.keyWords:
+            sql.update_pertinance_kw(ques_proposer, kw, reduction_kw_sn)
+        
+    
     sql.update_pertinance_type_dd(ques_proposer, ques_source.typeOfDD, reduction_type_dd)
     sql.update_pertinance_categorie(ques_proposer, ques_source.categorie, reduction_type_dd)
     sql.update_pertinance_global(ques_proposer, reduction_global)
