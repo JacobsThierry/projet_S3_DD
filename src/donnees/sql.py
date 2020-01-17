@@ -137,6 +137,7 @@ def ajouterQuestions():
     conn = getConnection()
     c = conn.cursor()
     for i in dt:
+        print(i)
         ajouterQuestion(i)
     conn.commit()
     conn.close()

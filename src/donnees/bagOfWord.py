@@ -27,7 +27,7 @@ def filtreMotsClefs(sent):
     return filtre
 
 def testBOW():
-    ch = "Have you implemented a policy to ensure you offer the funds within your defined Target Market?"
+    ch = "Have you implemented country policy  countries a policy to ensure you offer the funds within your defined Target Market?"
     print(filtreMotsClefs(ch))
 
 testBOW()

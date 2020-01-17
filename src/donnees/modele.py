@@ -22,31 +22,44 @@ def distance_categ_DD(c1, c2): ##distance entre les types de DD
     distance_identique = 0
     distance_diff = 2
     if(c1 == c2):
-        return distance_diff
-    else:
         return distance_identique
+    else:
+        return distance_diff
     
 
 
 def pertinance_base(q1, q2): #vaut au minimum -4 - card(kw) - card(kw_sn) * 2, au maximum 2 * card(kw) + 3 * card(kw_sn)
-    base = 0
-    for kw in q1.keyWords:
-        if kw in q2.keyWords:
-            base+=2
-        else:
-            base-=1
-    for kw in q2.keyWords:
-        if kw not in q1.keyWords:
-            base-=1
-    for kw in bagOfWord.filtreMotsClefs(q1.shortName):
-        if kw in q2.keyWords:
-            base+=3
-        elif kw not in q2.text:
-            base-=2
-    base -= distance_type_DD(q1.typeOfDD, q2.typeOfDD)
-    base -= distance_categ_DD(q1.categorie, q2.categorie)
+    kw_sn_q1 = []
+    for i in bagOfWord.filtreMotsClefs(q1.shortName):
+        kw_sn_q1.append(i)
+    kw_sn_q2 = []
+    for i in bagOfWord.filtreMotsClefs(q2.shortName):
+        kw_sn_q2.append(i)
 
-    return base
+    kw_q1 = q1.keyWords
+    kw_q2 = q2.keyWords
+    p = 0    
+    
+    for i in kw_sn_q1:
+        if i in kw_sn_q2:
+            p+=3
+        if i in kw_q2:
+            p+=2
+    for j in kw_q1:
+        if j in kw_sn_q2:
+            p+=2
+        if j in kw_q2:
+            p+=1
+    if(q1.id == q2.id):
+        print("foo : ", p)
+        print("kw_sn 1 :", kw_sn_q1)
+        print("kw_sn 2 :", kw_sn_q2)
+        print("kw 1 :", kw_q1)
+        print("kw 2 :", kw_q2)
+    p -= distance_type_DD(q1.typeOfDD, q2.typeOfDD)
+    p -= distance_categ_DD(q1.categorie, q2.categorie)
+    
+    return p
 
 def get_pertinance(q1,q2):
        
@@ -56,7 +69,6 @@ def get_pertinance(q1,q2):
         ratio = 0
     else:
         ratio = q2.choisi/q2.apparu
-    print(ratio)
     per+= max_pertinance * ratio
     
     
@@ -82,6 +94,9 @@ def get_pertinance_max(q1):#comparer la question saisi avec lui même pour trouv
 def get_liste_pertinance(q1): #retourne une liste de tuple (question, pertinance) dans l'ordre de la plus pertinance a la moins pertinante
     questions = sql.recupererQuestions()
     liste = []
+    print("card(kw_q1 = ", len(q1.keyWords))
+    print("card(kw_sn_q1 = ", len(bagOfWord.filtreMotsClefs(q1.shortName)))
+    print("pertinance_max = ", pertinance_base(q1,q1) + max_pertinance )
     for q2 in questions:
         if(q1.id != q2.id):
             liste.append((q2, get_pertinance(q1,q2)))
@@ -109,7 +124,7 @@ def calculer_pourcentage(q_proposer,q_saisi):
 
     print()
     print(v1)
-    print(v2)
+    print("maximum : ", v2)
     print()
     
     vp=(v1/v2)*100 
